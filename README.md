@@ -49,4 +49,4 @@ Microsoft · AWS · Google · Adobe · CrowdStrike · Salesforce
 
 React 18 · TypeScript · Vite · Tailwind CSS · React Router
 
-All data is mocked. Production would sync from **Synnex APIs** + vendor-specific systems (Partner Center, AWS, Google Admin, etc.).
+All data is mocked by default (`VITE_DATA_MODE=mock`). Set `VITE_DATA_MODE=live` and run a BFF at `/api/v1` for real vendor integration — see `src/api/` and `src/services/`.

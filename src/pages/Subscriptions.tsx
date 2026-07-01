@@ -5,11 +5,12 @@ import { Card } from '../components/ui/Card'
 import { StatusBadge } from '../components/ui/Badge'
 import { VendorBadge } from '../components/ui/VendorBadge'
 import { SearchInput } from '../components/ui/SearchInput'
-import { subscriptions } from '../data/mock'
+import { listSubscriptions } from '../services/repository'
 import { useCustomers } from '../context/CustomerContext'
 import { formatCurrency, formatDate } from '../lib/utils'
 
 export function SubscriptionsPage() {
+  const subscriptions = listSubscriptions()
   const { customers } = useCustomers()
   const [search, setSearch] = useState('')
 

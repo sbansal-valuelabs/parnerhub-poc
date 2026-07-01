@@ -14,7 +14,13 @@ import { Header } from '../components/layout/Sidebar'
 import { StatCard, Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { StatusBadge } from '../components/ui/Badge'
-import { subscriptions, activities, resellerProfile, marketplaceStats, portfolioSummary } from '../data/mock'
+import {
+  listSubscriptions,
+  listActivities,
+  getResellerProfile,
+  getMarketplaceStats,
+  getPortfolioSummary,
+} from '../services/repository'
 import { getPortfolioMrr, getCustomerStats } from '../data/customerStats'
 import { vendorList } from '../lib/vendors'
 import { VendorBadge } from '../components/ui/VendorBadge'
@@ -40,6 +46,11 @@ const activityColors: Record<ActivityItem['type'], string> = {
 
 export function DashboardPage() {
   const { customers } = useCustomers()
+  const subscriptions = listSubscriptions()
+  const activities = listActivities()
+  const resellerProfile = getResellerProfile()
+  const marketplaceStats = getMarketplaceStats()
+  const portfolioSummary = getPortfolioSummary()
   const totalMrr = getPortfolioMrr()
   const activeCustomers = customers.filter((c) => c.status === 'active').length
   const onboardingCount = customers.filter((c) => c.status === 'onboarding').length

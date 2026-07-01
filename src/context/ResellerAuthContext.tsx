@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
-import { currentResellerUser, resellerTeam } from '../data/teamMock'
+import { getDataProvider } from '../services'
 import type { ResellerRole } from '../types'
 
 export interface ResellerSession {
@@ -19,8 +19,6 @@ interface ResellerAuthContextValue {
 
 const ResellerAuthContext = createContext<ResellerAuthContextValue | null>(null)
 
-const organisation = 'Nexus IT Solutions'
-
 export function ResellerAuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<ResellerSession | null>(() => {
     const stored = sessionStorage.getItem('reseller-session')
@@ -34,28 +32,14 @@ export function ResellerAuthProvider({ children }: { children: ReactNode }) {
   }
 
   const login = useCallback((email: string): boolean => {
-    const member = resellerTeam.find(
-      (m) => m.email.toLowerCase() === email.toLowerCase() && m.status === 'active'
-    )
-    if (!member) return false
-    persist({
-      staffId: member.id,
-      name: member.name,
-      email: member.email,
-      role: member.role,
-      organisation,
-    })
+    const result = getDataProvider().authenticateReseller(email)
+    if (!result) return false
+    persist(result)
     return true
   }, [])
 
   const loginAsDemo = useCallback((): boolean => {
-    persist({
-      staffId: currentResellerUser.staffId,
-      name: currentResellerUser.name,
-      email: currentResellerUser.email,
-      role: currentResellerUser.role,
-      organisation,
-    })
+    persist(getDataProvider().getCurrentResellerUser())
     return true
   }, [])
 

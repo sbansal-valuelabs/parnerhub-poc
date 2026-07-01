@@ -2,9 +2,26 @@ import { Link } from 'react-router-dom'
 import { Header } from '../components/layout/Sidebar'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
-import { resellerProfile } from '../data/mock'
+import { getResellerProfile, listIntegrations } from '../services/repository'
 
 export function SettingsPage() {
+  const resellerProfile = getResellerProfile()
+  const integrations = listIntegrations()
+
+  const statusLabel: Record<string, string> = {
+    connected: 'Connected',
+    disconnected: 'Disconnected',
+    error: 'Error',
+    pending: 'Pending',
+  }
+
+  const statusClass: Record<string, string> = {
+    connected: 'bg-emerald-100 text-emerald-700',
+    disconnected: 'bg-slate-100 text-slate-600',
+    error: 'bg-red-100 text-red-700',
+    pending: 'bg-amber-100 text-amber-700',
+  }
+
   return (
     <>
       <Header title="Settings" subtitle="Manage your reseller profile and integrations" />
@@ -34,11 +51,11 @@ export function SettingsPage() {
         <Card>
           <h2 className="mb-4 text-base font-semibold text-slate-900">Integrations</h2>
           <div className="space-y-3">
-            {['Synnex Marketplace API', 'Microsoft Partner Center', 'AWS Partner Network', 'Google Cloud Reseller', 'ConnectWise PSA'].map((name) => (
-              <div key={name} className="flex items-center justify-between rounded-lg border border-surface-border p-3">
-                <span className="text-sm text-slate-700">{name}</span>
-                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
-                  Connected
+            {integrations.map((integration) => (
+              <div key={integration.id} className="flex items-center justify-between rounded-lg border border-surface-border p-3">
+                <span className="text-sm text-slate-700">{integration.name}</span>
+                <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusClass[integration.status]}`}>
+                  {statusLabel[integration.status]}
                 </span>
               </div>
             ))}

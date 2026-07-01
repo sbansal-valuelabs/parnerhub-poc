@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
-import { customers as initialCustomers } from '../data/mock'
+import { getDataProvider } from '../services'
 import type { Customer } from '../types'
 
 export interface NewCustomerInput {
@@ -20,34 +20,14 @@ interface CustomerContextValue {
 
 const CustomerContext = createContext<CustomerContextValue | null>(null)
 
-function generateId(): string {
-  return `cust-${Date.now().toString(36)}`
-}
-
-function generateTenantId(): string {
-  const segment = () => Math.random().toString(16).slice(2, 6)
-  return `${segment()}${segment()}-${segment()}-${segment()}-${segment()}-${segment()}${segment()}${segment()}`
-}
-
 export function CustomerProvider({ children }: { children: ReactNode }) {
-  const [customers, setCustomers] = useState<Customer[]>(initialCustomers)
+  const [customers, setCustomers] = useState<Customer[]>(() =>
+    getDataProvider().listCustomers()
+  )
 
   const addCustomer = useCallback((input: NewCustomerInput): Customer => {
-    const customer: Customer = {
-      id: generateId(),
-      name: input.name.trim(),
-      domain: input.domain.trim().toLowerCase(),
-      contactName: input.contactName.trim(),
-      contactEmail: input.contactEmail.trim().toLowerCase(),
-      industry: input.industry,
-      users: input.users,
-      status: input.linkExistingTenant ? 'active' : 'onboarding',
-      tenantId: generateTenantId(),
-      mrr: 0,
-      subscriptions: 0,
-      createdAt: new Date().toISOString().split('T')[0],
-    }
-    setCustomers((prev) => [customer, ...prev])
+    const customer = getDataProvider().createCustomer(input)
+    setCustomers(getDataProvider().listCustomers())
     return customer
   }, [])
 

@@ -27,6 +27,7 @@
 @layer components {
   .page-shell {
     width: 100%;
+    min-width: 0;
     max-width: var(--content-max);
     margin-inline: auto;
     padding-inline: var(--page-gutter);

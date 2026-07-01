@@ -14,7 +14,9 @@ import {
   LogOut,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { resellerProfile } from '../../data/mock'
+import { getResellerProfile } from '../../services/repository'
+
+const resellerProfile = getResellerProfile()
 import { useResellerAuth } from '../../context/ResellerAuthContext'
 import { resellerRoleLabels } from '../../types'
 
@@ -130,21 +132,21 @@ export function Sidebar() {
 
 export function Header({ title, subtitle, action }: { title: string; subtitle?: string; action?: React.ReactNode }) {
   return (
-    <header className="mb-6 flex items-start justify-between">
-      <div>
+    <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="min-w-0">
         <h1 className="text-2xl font-semibold text-slate-900">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-slate-500">{subtitle}</p>}
       </div>
-      {action && <div className="flex items-center gap-3">{action}</div>}
+      {action && <div className="flex shrink-0 items-center gap-3">{action}</div>}
     </header>
   )
 }
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <Sidebar />
-      <main className="pl-[var(--sidebar-width)]">
+      <main className="min-w-0 pl-[var(--sidebar-width)]">
         <div className="page-shell">{children}</div>
       </main>
     </div>

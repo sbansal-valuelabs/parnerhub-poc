@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Cloud, ArrowRight, Building2, ArrowLeft } from 'lucide-react'
 import { useResellerAuth } from '../context/ResellerAuthContext'
-import { resellerTeam } from '../data/teamMock'
-import { resellerProfile } from '../data/mock'
+import { listResellerTeam, getResellerProfile } from '../services/repository'
 import { resellerRoleLabels } from '../types'
 import { Button } from '../components/ui/Button'
 import { inputClassName } from '../components/ui/Modal'
@@ -11,10 +10,11 @@ import { inputClassName } from '../components/ui/Modal'
 export function ResellerLoginPage() {
   const navigate = useNavigate()
   const { login, loginAsDemo } = useResellerAuth()
+  const resellerProfile = getResellerProfile()
   const [email, setEmail] = useState('alex.morgan@nexusit.com.au')
   const [error, setError] = useState('')
 
-  const activeStaff = resellerTeam.filter((m) => m.status === 'active')
+  const activeStaff = listResellerTeam().filter((m) => m.status === 'active')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

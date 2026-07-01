@@ -4,13 +4,15 @@ import { Card } from '../../components/ui/Card'
 import { StatusBadge } from '../../components/ui/Badge'
 import { VendorBadge } from '../../components/ui/VendorBadge'
 import { usePortalAuth } from '../../context/PortalAuthContext'
-import { subscriptions, products } from '../../data/mock'
+import { listSubscriptions, listProducts } from '../../services/repository'
 import { getVendor } from '../../lib/vendors'
 import { formatDate } from '../../lib/utils'
 import { Check } from 'lucide-react'
 import type { CloudVendor } from '../../types'
 
 export function PortalProductsPage() {
+  const subscriptions = listSubscriptions()
+  const products = listProducts()
   const { session } = usePortalAuth()
   const customerSubs = session
     ? subscriptions.filter((s) => s.customerId === session.customerId)

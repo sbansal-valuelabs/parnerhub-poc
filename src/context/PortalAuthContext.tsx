@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
-import { portalAccounts } from '../data/portalMock'
+import { getDataProvider } from '../services'
 import { useCustomers } from './CustomerContext'
 
 export interface PortalSession {
@@ -36,17 +36,10 @@ export function PortalAuthProvider({ children }: { children: ReactNode }) {
       const customer = getCustomer(customerId)
       if (!customer || customer.status === 'suspended') return false
 
-      const account = portalAccounts.find(
-        (a) => a.customerId === customerId && a.email.toLowerCase() === email.toLowerCase()
-      )
-      if (!account) return false
+      const result = getDataProvider().authenticatePortal(customerId, email)
+      if (!result) return false
 
-      persist({
-        customerId,
-        userName: account.name,
-        userEmail: account.email,
-        role: account.role,
-      })
+      persist(result)
       return true
     },
     [getCustomer]
@@ -54,7 +47,7 @@ export function PortalAuthProvider({ children }: { children: ReactNode }) {
 
   const loginAsDemo = useCallback(
     (customerId: string): boolean => {
-      const account = portalAccounts.find((a) => a.customerId === customerId)
+      const account = getDataProvider().getPortalDemoAccount(customerId)
       if (!account) return false
       return login(customerId, account.email)
     },

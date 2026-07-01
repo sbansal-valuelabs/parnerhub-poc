@@ -7,12 +7,12 @@ import { StatusBadge } from '../../components/ui/Badge'
 import { VendorBadge } from '../../components/ui/VendorBadge'
 import { usePortalAuth } from '../../context/PortalAuthContext'
 import { useCustomers } from '../../context/CustomerContext'
-import { subscriptions } from '../../data/mock'
-import { getLicensesForCustomer, getUsersForCustomer, isConsumptionSku } from '../../data/portalMock'
+import { listSubscriptions, getLicensesForCustomer, getUsersForCustomer, isConsumptionSku } from '../../services/repository'
 import { getCustomerMrr } from '../../data/customerStats'
 import { formatCurrency, formatDate } from '../../lib/utils'
 
 export function PortalDashboardPage() {
+  const subscriptions = listSubscriptions()
   const { session } = usePortalAuth()
   const { getCustomer } = useCustomers()
   const customer = session ? getCustomer(session.customerId) : undefined

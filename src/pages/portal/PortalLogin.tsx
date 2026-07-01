@@ -3,10 +3,11 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { Cloud, ArrowRight, Building2, ArrowLeft } from 'lucide-react'
 import { usePortalAuth } from '../../context/PortalAuthContext'
 import { useCustomers } from '../../context/CustomerContext'
-import { portalAccounts } from '../../data/portalMock'
-import { resellerProfile } from '../../data/mock'
+import { listPortalAccounts, getResellerProfile } from '../../services/repository'
 import { Button } from '../../components/ui/Button'
 import { inputClassName } from '../../components/ui/Modal'
+
+const portalAccounts = listPortalAccounts()
 
 export function PortalLoginPage() {
   const navigate = useNavigate()
@@ -14,6 +15,7 @@ export function PortalLoginPage() {
   const preselectedCustomer = searchParams.get('customer') ?? ''
   const { login, loginAsDemo } = usePortalAuth()
   const { getCustomer } = useCustomers()
+  const resellerProfile = getResellerProfile()
 
   const [customerId, setCustomerId] = useState(preselectedCustomer || portalAccounts[0].customerId)
   const [email, setEmail] = useState(() => {

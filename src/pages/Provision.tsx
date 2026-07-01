@@ -16,7 +16,8 @@ import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { SearchInput } from '../components/ui/SearchInput'
 import { VendorBadge } from '../components/ui/VendorBadge'
-import { products } from '../data/mock'
+import { listProducts } from '../services/repository'
+import { getDataProvider } from '../services'
 import { useCustomers } from '../context/CustomerContext'
 import { categoryLabels, categoryColors, type BillingCycle, type CartItem } from '../types'
 import { formatCurrencyPrecise, cn } from '../lib/utils'
@@ -44,6 +45,7 @@ function initialStepIndex(
 }
 
 export function ProvisionPage() {
+  const products = listProducts()
   const [searchParams] = useSearchParams()
   const { customers } = useCustomers()
   const preselectedCustomer = searchParams.get('customer')
@@ -167,6 +169,15 @@ export function ProvisionPage() {
   }
 
   const handleSubmit = () => {
+    getDataProvider().submitProvisionOrder({
+      customerId: selectedCustomerId,
+      lineItems: cart.map((item) => ({
+        productId: item.product.id,
+        seats: item.seats,
+        billingCycle: item.billingCycle,
+      })),
+      acceptedAgreementIds: [...acceptedAgreementIds],
+    })
     setCompleted(true)
   }
 

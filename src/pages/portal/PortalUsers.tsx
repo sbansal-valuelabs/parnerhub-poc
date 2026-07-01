@@ -4,7 +4,7 @@ import { Card } from '../../components/ui/Card'
 import { Badge } from '../../components/ui/Badge'
 import { SearchInput } from '../../components/ui/SearchInput'
 import { usePortalAuth } from '../../context/PortalAuthContext'
-import { getUsersForCustomer } from '../../data/portalMock'
+import { getUsersForCustomer } from '../../services/repository'
 import { formatRelativeTime } from '../../lib/utils'
 
 export function PortalUsersPage() {

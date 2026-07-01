@@ -3,7 +3,7 @@ import { Card } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
 import { VendorBadge } from '../../components/ui/VendorBadge'
 import { usePortalAuth } from '../../context/PortalAuthContext'
-import { getLicensesForCustomer, isConsumptionSku } from '../../data/portalMock'
+import { getLicensesForCustomer, isConsumptionSku } from '../../services/repository'
 import { Link } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 

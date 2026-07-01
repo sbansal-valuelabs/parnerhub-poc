@@ -14,12 +14,13 @@ import { Breadcrumb } from '../components/layout/Sidebar'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { StatusBadge } from '../components/ui/Badge'
-import { subscriptions } from '../data/mock'
+import { listSubscriptions } from '../services/repository'
 import { useCustomers } from '../context/CustomerContext'
 import { getCustomerStats } from '../data/customerStats'
 import { formatCurrency, formatDate } from '../lib/utils'
 
 export function CustomerDetailPage() {
+  const subscriptions = listSubscriptions()
   const { id } = useParams()
   const { getCustomer } = useCustomers()
   const customer = id ? getCustomer(id) : undefined

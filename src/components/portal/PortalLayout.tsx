@@ -10,7 +10,7 @@ import {
 import { cn } from '../../lib/utils'
 import { usePortalAuth } from '../../context/PortalAuthContext'
 import { useCustomers } from '../../context/CustomerContext'
-import { resellerProfile } from '../../data/mock'
+import { getResellerProfile } from '../../services/repository'
 
 const navItems = [
   { to: '/portal', icon: LayoutDashboard, label: 'Overview', end: true },
@@ -19,6 +19,8 @@ const navItems = [
   { to: '/portal/users', icon: Users, label: 'Users' },
   { to: '/portal/support', icon: LifeBuoy, label: 'Support' },
 ]
+
+const resellerProfile = getResellerProfile()
 
 export function PortalLayout({ children }: { children: React.ReactNode }) {
   const { session, logout } = usePortalAuth()
@@ -86,7 +88,7 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       <footer className="border-t border-surface-border bg-white py-4">
-        <div className="mx-auto flex max-w-[var(--content-max)] items-center justify-between px-[var(--page-gutter)]">
+        <div className="mx-auto flex max-w-[var(--content-max)] items-center justify-between px-[var(--page-gutter)] text-xs text-slate-400">
           <span>Cloud services managed by {resellerProfile.name} via Synnex</span>
           <Link to="/" className="flex items-center gap-1 text-slate-500 hover:text-slate-700">
             Home

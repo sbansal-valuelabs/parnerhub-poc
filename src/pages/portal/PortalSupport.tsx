@@ -6,9 +6,10 @@ import { Button } from '../../components/ui/Button'
 import { FormField, inputClassName, selectClassName } from '../../components/ui/Modal'
 import { usePortalAuth } from '../../context/PortalAuthContext'
 import { useCustomers } from '../../context/CustomerContext'
-import { resellerProfile } from '../../data/mock'
+import { getResellerProfile } from '../../services/repository'
 
 export function PortalSupportPage() {
+  const resellerProfile = getResellerProfile()
   const { session } = usePortalAuth()
   const { getCustomer } = useCustomers()
   const customer = session ? getCustomer(session.customerId) : undefined

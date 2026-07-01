@@ -6,7 +6,7 @@ import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { SearchInput } from '../components/ui/SearchInput'
 import { VendorBadge } from '../components/ui/VendorBadge'
-import { products, marketplaceStats } from '../data/mock'
+import { listProducts, getMarketplaceStats } from '../services/repository'
 import { categoryLabels, categoryColors, type ProductCategory, type CloudVendor } from '../types'
 import { vendorList } from '../lib/vendors'
 import { formatCurrencyPrecise } from '../lib/utils'
@@ -29,6 +29,8 @@ const painPoints = [
 ]
 
 export function CatalogPage() {
+  const products = listProducts()
+  const marketplaceStats = getMarketplaceStats()
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState<ProductCategory | 'all'>('all')
   const [vendor, setVendor] = useState<CloudVendor | 'all'>('all')

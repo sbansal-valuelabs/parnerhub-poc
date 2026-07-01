@@ -73,6 +73,12 @@ export interface CartItem {
   billingCycle: BillingCycle
 }
 
+export interface CustomerStats {
+  mrr: number
+  activeSubscriptions: number
+  licensedUsers: number
+}
+
 export interface TenantUser {
   id: string
   customerId: string

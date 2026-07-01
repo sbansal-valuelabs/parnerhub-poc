@@ -8,9 +8,13 @@ import {
   Shield,
   Zap,
 } from 'lucide-react'
-import { marketplaceStats, portfolioSummary, resellerProfile } from '../data/mock'
+import { getMarketplaceStats, getPortfolioSummary, getResellerProfile } from '../services/repository'
 
 export function HomePage() {
+  const resellerProfile = getResellerProfile()
+  const marketplaceStats = getMarketplaceStats()
+  const portfolioSummary = getPortfolioSummary()
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <header className="border-b border-white/10">
