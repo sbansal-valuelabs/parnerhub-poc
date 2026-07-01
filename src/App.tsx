@@ -26,6 +26,7 @@ import { PortalSupportPage } from './pages/portal/PortalSupport'
 
 import { AiAssistantProvider } from './context/AiAssistantContext'
 import { AiAssistantPanel, AiAssistantFab } from './components/ai/AiAssistantPanel'
+import { ToastProvider } from './context/ToastContext'
 
 function ResellerApp() {
   return (
@@ -66,6 +67,7 @@ function CustomerPortalApp() {
 
 export default function App() {
   return (
+    <ToastProvider>
     <ResellerAuthProvider>
       <CustomerProvider>
         <TeamProvider>
@@ -100,5 +102,6 @@ export default function App() {
         </TeamProvider>
       </CustomerProvider>
     </ResellerAuthProvider>
+    </ToastProvider>
   )
 }

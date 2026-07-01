@@ -19,6 +19,7 @@ import { VendorBadge } from '../components/ui/VendorBadge'
 import { listProducts } from '../services/repository'
 import { getDataProvider } from '../services'
 import { useCustomers } from '../context/CustomerContext'
+import { useToast } from '../context/ToastContext'
 import { categoryLabels, categoryColors, type BillingCycle, type CartItem } from '../types'
 import { formatCurrencyPrecise, cn } from '../lib/utils'
 import { getAgreementsForVendors } from '../data/vendorAgreements'
@@ -62,6 +63,7 @@ export function ProvisionPage() {
   const products = listProducts()
   const [searchParams] = useSearchParams()
   const { customers } = useCustomers()
+  const { toast } = useToast()
   const preselectedCustomer = searchParams.get('customer')
   const preselectedProduct = searchParams.get('product')
   const preselectedProductIds = useMemo(() => {
@@ -191,7 +193,19 @@ export function ProvisionPage() {
       })),
       acceptedAgreementIds: [...acceptedAgreementIds],
     })
+    toast(`Provisioning started for ${selectedCustomer?.name}`)
     setCompleted(true)
+  }
+
+  const resetWizard = () => {
+    setCompleted(false)
+    setStepIndex(0)
+    setSelectedCustomerId('')
+    setCart([])
+    setCustomerSearch('')
+    setProductSearch('')
+    setAcceptedAgreementIds(new Set())
+    setResellerAttestation(false)
   }
 
   if (completed) {
@@ -213,9 +227,7 @@ export function ProvisionPage() {
           <Link to={`/customers/${selectedCustomerId}`}>
             <Button variant="outline">View customer</Button>
           </Link>
-          <Link to="/provision">
-            <Button onClick={() => window.location.reload()}>Provision another</Button>
-          </Link>
+          <Button onClick={resetWizard}>Provision another</Button>
         </div>
       </div>
     )
@@ -230,7 +242,11 @@ export function ProvisionPage() {
 
       {/* Step indicator */}
       <div className="mb-8">
-        <div className="flex items-center justify-between">
+        <p className="mb-3 text-center text-sm font-medium text-slate-700 lg:hidden">
+          Step {stepIndex + 1} of {wizardSteps.length}: {wizardSteps[stepIndex]?.label}
+        </p>
+        <div className="-mx-2 overflow-x-auto pb-2 lg:mx-0 lg:overflow-visible lg:pb-0">
+          <div className="flex min-w-[32rem] items-center justify-between px-2 lg:min-w-0">
           {wizardSteps.map((s, i) => {
             const Icon = s.icon
             const isActive = stepIndex === i
@@ -250,7 +266,7 @@ export function ProvisionPage() {
                   </div>
                   <span
                     className={cn(
-                      'mt-2 text-xs font-medium',
+                      'mt-2 hidden text-xs font-medium sm:block',
                       isActive ? 'text-brand-600' : isDone ? 'text-emerald-600' : 'text-slate-400'
                     )}
                   >
@@ -268,6 +284,7 @@ export function ProvisionPage() {
               </div>
             )
           })}
+          </div>
         </div>
       </div>
 

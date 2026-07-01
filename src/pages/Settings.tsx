@@ -67,15 +67,45 @@ export function SettingsPage() {
 }
 
 export function HelpPage() {
+  const guides = [
+    { title: 'Add a customer', desc: 'Register tenant details and primary contact', to: '/customers' },
+    { title: 'Browse marketplace', desc: 'Compare SKUs, margins, and activation times', to: '/catalog' },
+    { title: 'Provision services', desc: 'Guided wizard with vendor agreements', to: '/provision' },
+    { title: 'Manage team access', desc: 'Invite staff and assign roles', to: '/team' },
+  ]
+
   return (
     <>
-      <Header title="Help & Support" subtitle="Resources for getting the most out of PartnerHub" />
-      <Card>
-        <p className="text-sm text-slate-600">
-          This is a demo POC. In production, this section would include documentation, distributor support contacts,
-          and provisioning guides.
-        </p>
-      </Card>
+      <Header title="Help & Support" subtitle="Getting started and demo walkthrough pointers" />
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card>
+          <h2 className="mb-3 text-base font-semibold text-slate-900">Quick links</h2>
+          <ul className="space-y-2">
+            {guides.map((g) => (
+              <li key={g.to}>
+                <Link
+                  to={g.to}
+                  className="block rounded-lg border border-surface-border px-4 py-3 transition-colors hover:border-brand-300 hover:bg-brand-50/50"
+                >
+                  <p className="text-sm font-medium text-slate-900">{g.title}</p>
+                  <p className="text-xs text-slate-500">{g.desc}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Card>
+        <Card>
+          <h2 className="mb-3 text-base font-semibold text-slate-900">Demo notes</h2>
+          <p className="text-sm text-slate-600">
+            This is a proof-of-concept. In production, this section would link to distributor documentation,
+            Synnex support contacts, and vendor-specific provisioning guides.
+          </p>
+          <p className="mt-3 text-sm text-slate-600">
+            See <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">DEMO_GUIDE.md</code> in the
+            repository for canonical customer data, MRR calculations, and walkthrough scripts.
+          </p>
+        </Card>
+      </div>
     </>
   )
 }

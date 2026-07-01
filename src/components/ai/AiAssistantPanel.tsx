@@ -53,8 +53,8 @@ export function AiAssistantPanel() {
       <div className="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-[1px] lg:hidden" onClick={close} />
       <aside
         className={cn(
-          'fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-surface-border bg-white shadow-elevated',
-          'animate-in slide-in-from-right duration-200'
+          'fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-surface-border bg-white shadow-elevated transition-transform duration-200 ease-out',
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         <header className="flex items-center justify-between border-b border-surface-border px-4 py-3">

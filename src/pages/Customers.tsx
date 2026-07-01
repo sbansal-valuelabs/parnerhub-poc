@@ -9,6 +9,7 @@ import { SearchInput } from '../components/ui/SearchInput'
 import { AddCustomerModal } from '../components/customers/AddCustomerModal'
 import { useCustomers } from '../context/CustomerContext'
 import { getCustomerStats } from '../data/customerStats'
+import { FilterChip } from '../components/ui/FilterChip'
 import { formatCurrency, formatDate } from '../lib/utils'
 
 export function CustomersPage() {
@@ -56,18 +57,14 @@ export function CustomersPage() {
           />
           <div className="flex flex-wrap gap-2">
             {filters.map((f) => (
-              <button
+              <FilterChip
                 key={f.value}
+                active={statusFilter === f.value}
                 onClick={() => setStatusFilter(f.value)}
-                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                  statusFilter === f.value
-                    ? 'bg-brand-100 text-brand-700'
-                    : 'text-slate-600 hover:bg-slate-100'
-                }`}
+                count={f.count}
               >
                 {f.label}
-                <span className="ml-1.5 text-xs opacity-70">({f.count})</span>
-              </button>
+              </FilterChip>
             ))}
           </div>
         </div>

@@ -9,6 +9,7 @@ import { VendorBadge } from '../components/ui/VendorBadge'
 import { listProducts, getMarketplaceStats } from '../services/repository'
 import { categoryLabels, categoryColors, type ProductCategory, type CloudVendor } from '../types'
 import { vendorList } from '../lib/vendors'
+import { FilterChip } from '../components/ui/FilterChip'
 import { formatCurrencyPrecise } from '../lib/utils'
 
 const categories: { value: ProductCategory | 'all'; label: string }[] = [
@@ -126,17 +127,13 @@ export function CatalogPage() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
           {categories.map((cat) => (
-            <button
+            <FilterChip
               key={cat.value}
+              active={category === cat.value}
               onClick={() => setCategory(cat.value)}
-              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                category === cat.value
-                  ? 'bg-brand-600 text-white'
-                  : 'bg-white text-slate-600 border border-surface-border hover:bg-slate-50'
-              }`}
             >
               {cat.label}
-            </button>
+            </FilterChip>
           ))}
         </div>
         <SearchInput

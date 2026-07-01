@@ -1,6 +1,6 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
-  ArrowLeft,
   Mail,
   Globe,
   Users,
@@ -18,11 +18,14 @@ import { listSubscriptions } from '../services/repository'
 import { useCustomers } from '../context/CustomerContext'
 import { getCustomerStats } from '../data/customerStats'
 import { formatCurrency, formatDate } from '../lib/utils'
+import { useToast } from '../context/ToastContext'
 
 export function CustomerDetailPage() {
   const subscriptions = listSubscriptions()
   const { id } = useParams()
   const { getCustomer } = useCustomers()
+  const { toast } = useToast()
+  const [copied, setCopied] = useState(false)
   const customer = id ? getCustomer(id) : undefined
   const customerSubs = subscriptions.filter((s) => s.customerId === id)
 
@@ -43,34 +46,26 @@ export function CustomerDetailPage() {
     <>
       <Breadcrumb
         items={[
-          { label: 'Customers' },
+          { label: 'Customers', to: '/customers' },
           { label: customer.name },
         ]}
       />
 
       <div className="mb-6">
-        <Link
-          to="/customers"
-          className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to customers
-        </Link>
-
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand-100 text-xl font-bold text-brand-700">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-xl font-bold text-brand-700">
               {customer.name.charAt(0)}
             </div>
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <h1 className="text-2xl font-semibold text-slate-900">{customer.name}</h1>
                 <StatusBadge status={customer.status} />
               </div>
               <p className="mt-1 text-sm text-slate-500">{customer.industry} · Customer since {formatDate(customer.createdAt)}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <a href={`/portal/login?customer=${customer.id}`} target="_blank" rel="noopener noreferrer">
               <Button variant="outline">
                 <ExternalLink className="h-4 w-4" />
@@ -178,8 +173,22 @@ export function CustomerDetailPage() {
                 <dt className="text-xs font-medium text-slate-500">Tenant ID</dt>
                 <dd className="mt-0.5 flex items-center gap-2">
                   <code className="truncate text-xs text-slate-600">{customer.tenantId}</code>
-                  <button className="text-slate-400 hover:text-slate-600" title="Copy">
-                    <Copy className="h-3.5 w-3.5" />
+                  <button
+                    type="button"
+                    className="text-slate-400 hover:text-slate-600"
+                    title="Copy tenant ID"
+                    onClick={async () => {
+                      await navigator.clipboard.writeText(customer.tenantId)
+                      setCopied(true)
+                      toast('Tenant ID copied')
+                      window.setTimeout(() => setCopied(false), 2000)
+                    }}
+                  >
+                    {copied ? (
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                    ) : (
+                      <Copy className="h-3.5 w-3.5" />
+                    )}
                   </button>
                 </dd>
               </div>

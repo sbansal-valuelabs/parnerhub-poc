@@ -7,9 +7,11 @@ import { Badge } from '../components/ui/Badge'
 import { SearchInput } from '../components/ui/SearchInput'
 import { AddTeamMemberModal } from '../components/team/AddTeamMemberModal'
 import { useTeam } from '../context/TeamContext'
+import { useToast } from '../context/ToastContext'
 import { resellerRoleLabels, resellerRoleDescriptions, type ResellerRole } from '../types'
 import { formatRelativeTime } from '../lib/utils'
 import { cn } from '../lib/utils'
+import { EmptyState } from '../components/ui/EmptyState'
 
 const roleBadgeVariant: Record<ResellerRole, 'default' | 'success' | 'info' | 'warning' | 'neutral'> = {
   admin: 'default',
@@ -31,6 +33,7 @@ const permissions = [
 
 export function TeamPage() {
   const { team, currentUser, isAdmin, deactivateStaff, resendInvite } = useTeam()
+  const { toast } = useToast()
   const [search, setSearch] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
   const [openMenu, setOpenMenu] = useState<string | null>(null)
@@ -77,7 +80,23 @@ export function TeamPage() {
               />
             </div>
 
-            <div className="overflow-x-auto">
+            {filtered.length === 0 ? (
+              <EmptyState
+                icon={<Shield className="h-6 w-6" />}
+                title={search ? 'No team members match your search' : 'No team members'}
+                description={isAdmin ? 'Invite your first colleague to collaborate on provisioning.' : undefined}
+                action={
+                  isAdmin && !search ? (
+                    <Button size="sm" onClick={() => setShowAddModal(true)}>
+                      <UserPlus className="h-4 w-4" />
+                      Invite member
+                    </Button>
+                  ) : undefined
+                }
+              />
+            ) : (
+              <>
+            <div className="hidden overflow-x-auto md:block">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-surface-border bg-slate-50/80 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
@@ -144,7 +163,11 @@ export function TeamPage() {
                                 <div className="absolute right-0 z-10 mt-1 w-40 rounded-lg border border-surface-border bg-white py-1 shadow-elevated">
                                   {member.status === 'invited' && (
                                     <button
-                                      onClick={() => { resendInvite(member.id); setOpenMenu(null) }}
+                                      onClick={() => {
+                                        resendInvite(member.id)
+                                        setOpenMenu(null)
+                                        toast(`Invite resent to ${member.email}`, 'info')
+                                      }}
                                       className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
                                     >
                                       <Mail className="h-3.5 w-3.5" />
@@ -152,7 +175,11 @@ export function TeamPage() {
                                     </button>
                                   )}
                                   <button
-                                    onClick={() => { deactivateStaff(member.id); setOpenMenu(null) }}
+                                    onClick={() => {
+                                      deactivateStaff(member.id)
+                                      setOpenMenu(null)
+                                      toast(`${member.name} deactivated`)
+                                    }}
                                     className="flex w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
                                   >
                                     Deactivate
@@ -168,6 +195,46 @@ export function TeamPage() {
                 </tbody>
               </table>
             </div>
+
+            <div className="divide-y divide-surface-border md:hidden">
+              {filtered.map((member) => (
+                <div key={member.id} className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">
+                      {member.name.charAt(0)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-slate-900">
+                        {member.name}
+                        {member.id === currentUser.staffId && (
+                          <span className="ml-1 text-xs text-slate-400">(you)</span>
+                        )}
+                      </p>
+                      <p className="text-xs text-slate-500">{member.email}</p>
+                      <p className="mt-1 text-xs text-slate-500">{member.department}</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <Badge variant={roleBadgeVariant[member.role]}>
+                          {resellerRoleLabels[member.role]}
+                        </Badge>
+                        <Badge
+                          variant={
+                            member.status === 'active'
+                              ? 'success'
+                              : member.status === 'invited'
+                                ? 'warning'
+                                : 'neutral'
+                          }
+                        >
+                          {member.status === 'active' ? 'Active' : member.status === 'invited' ? 'Invited' : 'Deactivated'}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+              </>
+            )}
           </Card>
         </div>
 

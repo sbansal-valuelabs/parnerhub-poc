@@ -4,6 +4,7 @@ import { Building2, Link2, Sparkles } from 'lucide-react'
 import { Modal, FormField, inputClassName, selectClassName } from '../ui/Modal'
 import { Button } from '../ui/Button'
 import { useCustomers, type NewCustomerInput } from '../../context/CustomerContext'
+import { useToast } from '../../context/ToastContext'
 
 const industries = [
   'Manufacturing',
@@ -55,6 +56,7 @@ const emptyForm: NewCustomerInput = {
 export function AddCustomerModal({ open, onClose }: AddCustomerModalProps) {
   const navigate = useNavigate()
   const { addCustomer } = useCustomers()
+  const { toast } = useToast()
   const [form, setForm] = useState<NewCustomerInput>(emptyForm)
   const [errors, setErrors] = useState<FormErrors>({})
   const [submitting, setSubmitting] = useState(false)
@@ -83,6 +85,7 @@ export function AddCustomerModal({ open, onClose }: AddCustomerModalProps) {
       const customer = addCustomer(form)
       setSubmitting(false)
       handleClose()
+      toast(`${customer.name} added to your portfolio`)
       navigate(`/customers/${customer.id}`)
     }, 600)
   }

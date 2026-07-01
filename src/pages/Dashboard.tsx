@@ -9,6 +9,7 @@ import {
   UserPlus,
   FileText,
   AlertCircle,
+  CheckCircle2,
 } from 'lucide-react'
 import { Header } from '../components/layout/Sidebar'
 import { StatCard, Card } from '../components/ui/Card'
@@ -28,6 +29,8 @@ import { useCustomers } from '../context/CustomerContext'
 import { formatCurrency, formatRelativeTime } from '../lib/utils'
 import type { ActivityItem } from '../types'
 import { AiInsightBanner } from '../components/ai/AiInsightBanner'
+import { GettingStartedBanner } from '../components/dashboard/GettingStartedBanner'
+import { EmptyState, EmptyStateLink } from '../components/ui/EmptyState'
 
 const activityIcons: Record<ActivityItem['type'], typeof Package> = {
   provision: Package,
@@ -62,6 +65,8 @@ export function DashboardPage() {
     count: subscriptions.filter((s) => s.vendor === v.id && s.status === 'active').length,
   })).filter((v) => v.count > 0)
 
+  const attentionCustomers = customers.filter((c) => c.status !== 'active' || c.mrr === 0)
+
   return (
     <>
       <Header
@@ -76,6 +81,8 @@ export function DashboardPage() {
           </Link>
         }
       />
+
+      <GettingStartedBanner />
 
       <AiInsightBanner />
 
@@ -106,7 +113,7 @@ export function DashboardPage() {
         <StatCard
           label="Partner Margin"
           value={`${resellerProfile.margin}%`}
-          change="Gold tier rate"
+          change={`${resellerProfile.tier} rate`}
           changeType="positive"
           icon={<TrendingUp className="h-5 w-5 text-brand-600" />}
           iconBg="bg-emerald-100"
@@ -123,10 +130,15 @@ export function DashboardPage() {
               </Link>
             </div>
             <div className="divide-y divide-surface-border">
-              {customers
-                .filter((c) => c.status !== 'active' || c.mrr === 0)
-                .slice(0, 4)
-                .map((customer) => (
+              {attentionCustomers.length === 0 ? (
+                <EmptyState
+                  icon={<CheckCircle2 className="h-6 w-6 text-emerald-500" />}
+                  title="All customers look healthy"
+                  description="No onboarding tenants or zero-MRR accounts need attention right now."
+                  action={<EmptyStateLink to="/customers">View customers</EmptyStateLink>}
+                />
+              ) : (
+                attentionCustomers.slice(0, 4).map((customer) => (
                   <Link
                     key={customer.id}
                     to={`/customers/${customer.id}`}
@@ -146,7 +158,8 @@ export function DashboardPage() {
                       <ArrowRight className="h-4 w-4 text-slate-400" />
                     </div>
                   </Link>
-                ))}
+                ))
+              )}
             </div>
           </Card>
 
