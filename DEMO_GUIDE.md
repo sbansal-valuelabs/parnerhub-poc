@@ -1,10 +1,21 @@
 # Demo guide — data interpretation
 
-Use **3 customers** for live demos. All dollar amounts are **AUD**.
+Use **two demo reseller organisations**, each with **3 customers**. All dollar amounts are **AUD**.
 
 ---
 
-## Demo customers
+## Demo resellers
+
+| Reseller | Tier | Login as | Portfolio MRR | Story |
+|----------|------|----------|---------------|--------|
+| **Nexus IT Solutions** | Gold Cloud Partner | Alex Morgan | **$10,622.60** | Established MSP — manufacturing & legal |
+| **Horizon Cloud Services** | Silver Cloud Partner | Chris Freeman | **$4,633.00** | Growth partner — finance & retail |
+
+**Reseller sign-in:** `/login` — pick an organisation card, then quick-login as admin.
+
+---
+
+## Nexus IT Solutions — demo customers
 
 | # | Customer | Status | Portal login | Story |
 |---|----------|--------|--------------|--------|
@@ -79,7 +90,7 @@ Use **3 customers** for live demos. All dollar amounts are **AUD**.
 
 ---
 
-## Portfolio (reseller dashboard)
+## Portfolio (Nexus reseller dashboard)
 
 | Metric | Value | How derived |
 |--------|-------|-------------|
@@ -88,6 +99,44 @@ Use **3 customers** for live demos. All dollar amounts are **AUD**.
 | Active subscriptions | 7 | 4 + 3 |
 | Onboarding | 1 | Coastal Health |
 | Synnex credit used | 35% | $26,250 of $75,000 limit |
+
+---
+
+## Horizon Cloud Services — demo customers
+
+| # | Customer | Status | Portal login | Story |
+|---|----------|--------|--------------|--------|
+| 1 | **Metro Finance Group** | Active | Tom Bradley | Finance — Microsoft + Salesforce + Defender |
+| 2 | **Summit Retail Co** | Active | — | Retail — Google + AWS + M365 |
+| 3 | **Riverside Schools** | Onboarding | — | Education empty state |
+
+### Metro Finance Group — **$3,064.00/mo**
+
+| Product | Vendor | Seats | MRR |
+|---------|--------|-------|-----|
+| Microsoft 365 Business Standard | Microsoft | 55 | $1,023.00 |
+| Azure Subscription | Microsoft | — | $295.00 |
+| Salesforce Sales Cloud Professional | Salesforce | 18 | $1,350.00 |
+| Microsoft Defender for Endpoint P2 | Microsoft | 55 | $396.00 |
+| | | **Total** | **$3,064.00** |
+
+### Summit Retail Co — **$1,569.00/mo**
+
+| Product | Vendor | Seats | MRR |
+|---------|--------|-------|-----|
+| Google Workspace Business Plus | Google | 35 | $924.00 |
+| AWS Business Support | AWS | — | $180.00 |
+| Microsoft 365 Business Standard | Microsoft | 25 | $465.00 |
+| | | **Total** | **$1,569.00** |
+
+### Horizon portfolio
+
+| Metric | Value |
+|--------|-------|
+| **Total MRR** | **$4,633.00** |
+| Active customers | 2 |
+| Onboarding | 1 (Riverside Schools) |
+| Synnex credit used | 54.5% | $21,800 of $40,000 limit |
 
 ---
 
@@ -129,6 +178,8 @@ Computed live from active subscriptions (`getCustomerMrr()`), so customer list a
 ## Recommended demo script (~10 min)
 
 0. **Home** (`/`) — Choose reseller or customer portal  
+1. **Reseller login** — Pick **Nexus IT** or **Horizon Cloud**, sign in as admin  
+2. **Dashboard** — Portfolio scoped to selected reseller  
 1. **Reseller login** — Quick login as Alex Morgan (Administrator)  
 2. **Dashboard** — Portfolio MRR **$10,623**, 2 active + 1 onboarding, vendor breakdown  
 2. **Customers → Acme** — Walk through **$6,200** MRR, 4 subs, 118 users  

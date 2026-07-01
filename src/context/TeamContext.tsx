@@ -1,7 +1,8 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import { getDataProvider } from '../services'
 import type { ResellerSessionDto } from '../types/api'
 import type { ResellerRole, ResellerStaff } from '../types'
+import { useResellerAuth } from './ResellerAuthContext'
 
 export interface NewStaffInput {
   name: string
@@ -22,8 +23,14 @@ interface TeamContextValue {
 const TeamContext = createContext<TeamContextValue | null>(null)
 
 export function TeamProvider({ children }: { children: ReactNode }) {
+  const { session } = useResellerAuth()
   const [team, setTeam] = useState<ResellerStaff[]>(() => getDataProvider().listResellerTeam())
-  const currentUser = getDataProvider().getCurrentResellerUser()
+
+  useEffect(() => {
+    setTeam(getDataProvider().listResellerTeam())
+  }, [session?.resellerId])
+
+  const currentUser: ResellerSessionDto = session ?? getDataProvider().getCurrentResellerUser()
 
   const refreshTeam = () => setTeam(getDataProvider().listResellerTeam())
 

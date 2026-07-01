@@ -45,7 +45,12 @@ export interface DataProvider {
   getPortfolioMrr(): number
 
   // Reseller
+  setActiveReseller(resellerId: string | null): void
+  getActiveResellerId(): string | null
+  listDemoResellers(): import('../data/resellers').DemoReseller[]
   getResellerProfile(): ResellerProfile
+  getResellerProfileById(resellerId: string): ResellerProfile
+  getDefaultResellerUser(resellerId: string): ResellerSessionDto | null
   listActivities(): ActivityItem[]
   listIntegrations(): Integration[]
 

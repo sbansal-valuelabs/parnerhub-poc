@@ -1,8 +1,10 @@
 import type { ResellerStaff } from '../types'
+import { RESELLER_HORIZON, RESELLER_NEXUS } from './resellers'
 
 export const resellerTeam: ResellerStaff[] = [
   {
     id: 'staff-001',
+    resellerId: RESELLER_NEXUS,
     name: 'Alex Morgan',
     email: 'alex.morgan@nexusit.com.au',
     role: 'admin',
@@ -12,6 +14,7 @@ export const resellerTeam: ResellerStaff[] = [
   },
   {
     id: 'staff-002',
+    resellerId: RESELLER_NEXUS,
     name: 'Jordan Lee',
     email: 'jordan.lee@nexusit.com.au',
     role: 'provisioning',
@@ -21,6 +24,7 @@ export const resellerTeam: ResellerStaff[] = [
   },
   {
     id: 'staff-003',
+    resellerId: RESELLER_NEXUS,
     name: 'Sam Patel',
     email: 'sam.patel@nexusit.com.au',
     role: 'provisioning',
@@ -30,6 +34,7 @@ export const resellerTeam: ResellerStaff[] = [
   },
   {
     id: 'staff-004',
+    resellerId: RESELLER_NEXUS,
     name: 'Taylor Brooks',
     email: 'taylor.brooks@nexusit.com.au',
     role: 'sales',
@@ -39,6 +44,7 @@ export const resellerTeam: ResellerStaff[] = [
   },
   {
     id: 'staff-005',
+    resellerId: RESELLER_NEXUS,
     name: 'Casey Nguyen',
     email: 'casey.nguyen@nexusit.com.au',
     role: 'finance',
@@ -48,6 +54,7 @@ export const resellerTeam: ResellerStaff[] = [
   },
   {
     id: 'staff-006',
+    resellerId: RESELLER_NEXUS,
     name: 'Morgan Wright',
     email: 'm.wright@nexusit.com.au',
     role: 'read-only',
@@ -56,6 +63,36 @@ export const resellerTeam: ResellerStaff[] = [
     lastActive: '',
     invitedAt: '2025-06-20T10:00:00',
   },
+  {
+    id: 'staff-h001',
+    resellerId: RESELLER_HORIZON,
+    name: 'Chris Freeman',
+    email: 'chris.freeman@horizoncloud.com.au',
+    role: 'admin',
+    status: 'active',
+    department: 'Management',
+    lastActive: '2025-06-24T10:00:00',
+  },
+  {
+    id: 'staff-h002',
+    resellerId: RESELLER_HORIZON,
+    name: 'Dana Liu',
+    email: 'dana.liu@horizoncloud.com.au',
+    role: 'provisioning',
+    status: 'active',
+    department: 'Cloud Services',
+    lastActive: '2025-06-24T08:45:00',
+  },
+  {
+    id: 'staff-h003',
+    resellerId: RESELLER_HORIZON,
+    name: "Pat O'Connor",
+    email: 'pat.oconnor@horizoncloud.com.au',
+    role: 'sales',
+    status: 'active',
+    department: 'Sales',
+    lastActive: '2025-06-23T16:00:00',
+  },
 ]
 
 export const currentResellerUser = {
@@ -63,4 +100,5 @@ export const currentResellerUser = {
   name: 'Alex Morgan',
   email: 'alex.morgan@nexusit.com.au',
   role: 'admin' as const,
+  resellerId: RESELLER_NEXUS,
 }

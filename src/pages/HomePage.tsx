@@ -127,7 +127,7 @@ export function HomePage() {
         </div>
 
         <p className="mt-6 text-center text-[10px] text-slate-500">
-          Demo environment · No real authentication required
+          Demo environment · 2 reseller orgs · No real authentication required
         </p>
       </section>
     </div>

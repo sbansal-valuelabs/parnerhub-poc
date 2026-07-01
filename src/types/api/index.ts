@@ -91,6 +91,7 @@ export interface ResellerSessionDto {
   email: string
   role: ResellerStaff['role']
   organisation: string
+  resellerId: string
 }
 
 export interface PortalSessionDto {

@@ -1,11 +1,9 @@
 import {
-  activities,
-  customers as seedCustomers,
+  activities as nexusActivities,
+  customers as nexusCustomers,
   marketplaceStats,
-  portfolioSummary,
   products,
-  resellerProfile,
-  subscriptions,
+  subscriptions as nexusSubscriptions,
 } from '../data/mock'
 import {
   getLicensesForCustomer as mockGetLicenses,
@@ -13,23 +11,34 @@ import {
   isConsumptionSku,
   portalAccounts,
 } from '../data/portalMock'
+import {
+  horizonActivities,
+  horizonCustomers,
+  horizonSubscriptions,
+} from '../data/horizonMock'
 import { currentResellerUser, resellerTeam as seedTeam } from '../data/teamMock'
+import {
+  demoResellers,
+  getDemoReseller,
+  RESELLER_NEXUS,
+  resellerProfiles,
+} from '../data/resellers'
 import { roundAud } from '../lib/billing'
-import type { Customer, ResellerStaff } from '../types'
+import type { ActivityItem, Customer, ResellerStaff } from '../types'
 import type {
   CreateCustomerRequest,
   Integration,
   PortalAccountDto,
   PortalSessionDto,
+  PortfolioSummary,
   ProvisionOrderRequest,
   ProvisionOrderResponse,
+  ResellerProfile,
   ResellerSessionDto,
 } from '../types/api'
 import type { CustomerStats } from '../types'
 import type { NewStaffInput } from '../context/TeamContext'
 import type { DataProvider } from './dataProvider.types'
-
-const organisation = 'Nexus IT Solutions'
 
 const DEMO_INTEGRATIONS: Integration[] = [
   { id: 'synnex', name: 'Synnex Marketplace API', vendor: 'synnex', status: 'connected', lastSyncedAt: '2025-06-24T08:00:00Z' },
@@ -48,11 +57,58 @@ function generateTenantId(): string {
   return `${segment()}${segment()}-${segment()}-${segment()}-${segment()}-${segment()}${segment()}${segment()}`
 }
 
+function summarisePortfolio(customers: Customer[], subscriptions: typeof nexusSubscriptions): PortfolioSummary {
+  const activeCustomers = customers.filter((c) => c.status === 'active').length
+  const onboardingCustomers = customers.filter((c) => c.status === 'onboarding').length
+  const customerIds = new Set(customers.map((c) => c.id))
+  const activeSubs = subscriptions.filter((s) => s.status === 'active' && customerIds.has(s.customerId))
+  const totalMrr = roundAud(activeSubs.reduce((sum, s) => sum + s.mrr, 0))
+  return {
+    totalMrr,
+    activeCustomers,
+    activeSubscriptions: activeSubs.length,
+    onboardingCustomers,
+  }
+}
+
 class MockDataProvider implements DataProvider {
   readonly mode = 'mock' as const
 
-  private customers = [...seedCustomers]
+  private activeResellerId: string | null = null
+  private allCustomers = [...nexusCustomers, ...horizonCustomers]
+  private allSubscriptions = [...nexusSubscriptions, ...horizonSubscriptions]
+  private allActivities = [...nexusActivities, ...horizonActivities]
+  private customers = [...this.allCustomers]
   private team = [...seedTeam]
+
+  setActiveReseller(resellerId: string | null) {
+    this.activeResellerId = resellerId
+    this.customers = resellerId
+      ? this.allCustomers.filter((c) => c.resellerId === resellerId)
+      : [...this.allCustomers]
+  }
+
+  getActiveResellerId() {
+    return this.activeResellerId
+  }
+
+  listDemoResellers() {
+    return demoResellers
+  }
+
+  private customerIdsInScope(): Set<string> {
+    return new Set(this.customers.map((c) => c.id))
+  }
+
+  private subscriptionsInScope() {
+    const ids = this.customerIdsInScope()
+    return this.allSubscriptions.filter((s) => ids.has(s.customerId))
+  }
+
+  private activitiesInScope() {
+    if (!this.activeResellerId) return this.allActivities
+    return this.allActivities.filter((a) => a.resellerId === this.activeResellerId)
+  }
 
   listProducts() {
     return products
@@ -67,12 +123,13 @@ class MockDataProvider implements DataProvider {
   }
 
   getCustomer(id: string) {
-    return this.customers.find((c) => c.id === id)
+    return this.allCustomers.find((c) => c.id === id)
   }
 
   createCustomer(input: CreateCustomerRequest): Customer {
     const customer: Customer = {
       id: generateId(),
+      resellerId: this.activeResellerId ?? RESELLER_NEXUS,
       name: input.name.trim(),
       domain: input.domain.trim().toLowerCase(),
       contactName: input.contactName.trim(),
@@ -85,35 +142,41 @@ class MockDataProvider implements DataProvider {
       subscriptions: 0,
       createdAt: new Date().toISOString().split('T')[0],
     }
-    this.customers = [customer, ...this.customers]
+    this.allCustomers = [customer, ...this.allCustomers]
+    if (!this.activeResellerId || customer.resellerId === this.activeResellerId) {
+      this.customers = [customer, ...this.customers]
+    }
     return customer
   }
 
   listSubscriptions() {
-    return subscriptions
+    return this.subscriptionsInScope()
   }
 
   listSubscriptionsForCustomer(customerId: string) {
-    return subscriptions.filter((s) => s.customerId === customerId)
+    return this.allSubscriptions.filter((s) => s.customerId === customerId)
   }
 
-  getPortfolioSummary() {
-    return portfolioSummary
+  getPortfolioSummary(): PortfolioSummary {
+    if (this.activeResellerId) {
+      return summarisePortfolio(this.customers, this.allSubscriptions)
+    }
+    return summarisePortfolio(this.allCustomers, this.allSubscriptions)
   }
 
   getCustomerMrr(customerId: string): number {
     return roundAud(
-      subscriptions
+      this.allSubscriptions
         .filter((s) => s.customerId === customerId && s.status === 'active')
         .reduce((sum, s) => sum + s.mrr, 0)
     )
   }
 
   getCustomerLicensedUsers(customerId: string): number {
-    const customer = this.customers.find((c) => c.id === customerId)
+    const customer = this.allCustomers.find((c) => c.id === customerId)
     if (customer?.licensedUsers != null) return customer.licensedUsers
 
-    const seatSubs = subscriptions
+    const seatSubs = this.allSubscriptions
       .filter(
         (s) =>
           s.customerId === customerId &&
@@ -127,10 +190,10 @@ class MockDataProvider implements DataProvider {
   }
 
   getCustomerStats(customerId: string): CustomerStats {
-    const customer = this.customers.find((c) => c.id === customerId)
+    const customer = this.allCustomers.find((c) => c.id === customerId)
     return {
       mrr: this.getCustomerMrr(customerId),
-      activeSubscriptions: subscriptions.filter(
+      activeSubscriptions: this.allSubscriptions.filter(
         (s) => s.customerId === customerId && s.status === 'active'
       ).length,
       licensedUsers: customer?.licensedUsers ?? this.getCustomerLicensedUsers(customerId),
@@ -138,19 +201,21 @@ class MockDataProvider implements DataProvider {
   }
 
   getPortfolioMrr(): number {
-    return roundAud(
-      subscriptions
-        .filter((s) => s.status === 'active')
-        .reduce((sum, s) => sum + s.mrr, 0)
-    )
+    const subs = this.activeResellerId ? this.subscriptionsInScope() : this.allSubscriptions
+    return roundAud(subs.filter((s) => s.status === 'active').reduce((sum, s) => sum + s.mrr, 0))
   }
 
-  getResellerProfile() {
-    return resellerProfile
+  getResellerProfile(): ResellerProfile {
+    const id = this.activeResellerId ?? RESELLER_NEXUS
+    return resellerProfiles[id] ?? resellerProfiles[RESELLER_NEXUS]
   }
 
-  listActivities() {
-    return activities
+  getResellerProfileById(resellerId: string): ResellerProfile {
+    return resellerProfiles[resellerId] ?? resellerProfiles[RESELLER_NEXUS]
+  }
+
+  listActivities(): ActivityItem[] {
+    return this.activitiesInScope()
   }
 
   listIntegrations() {
@@ -158,22 +223,48 @@ class MockDataProvider implements DataProvider {
   }
 
   listResellerTeam() {
-    return this.team
+    if (!this.activeResellerId) return this.team
+    return this.team.filter((m) => m.resellerId === this.activeResellerId)
   }
 
   getCurrentResellerUser(): ResellerSessionDto {
+    const profile = this.getResellerProfile()
     return {
       staffId: currentResellerUser.staffId,
       name: currentResellerUser.name,
       email: currentResellerUser.email,
       role: currentResellerUser.role,
-      organisation,
+      organisation: profile.name,
+      resellerId: currentResellerUser.resellerId,
+    }
+  }
+
+  getDefaultResellerUser(resellerId: string): ResellerSessionDto | null {
+    const demo = getDemoReseller(resellerId)
+    if (!demo) return null
+    const member = this.team.find(
+      (m) => m.email === demo.demoAdminEmail && m.status === 'active'
+    )
+    if (!member) return null
+    return this.toSession(member)
+  }
+
+  private toSession(member: ResellerStaff): ResellerSessionDto {
+    const profile = resellerProfiles[member.resellerId]
+    return {
+      staffId: member.id,
+      name: member.name,
+      email: member.email,
+      role: member.role,
+      organisation: profile?.name ?? member.resellerId,
+      resellerId: member.resellerId,
     }
   }
 
   addStaff(input: NewStaffInput): ResellerStaff {
     const member: ResellerStaff = {
       id: `staff-${Date.now().toString(36)}`,
+      resellerId: this.activeResellerId ?? RESELLER_NEXUS,
       name: input.name.trim(),
       email: input.email.trim().toLowerCase(),
       role: input.role,
@@ -187,7 +278,6 @@ class MockDataProvider implements DataProvider {
   }
 
   deactivateStaff(id: string) {
-    if (id === currentResellerUser.staffId) return
     this.team = this.team.map((m) =>
       m.id === id ? { ...m, status: 'deactivated' as const } : m
     )
@@ -222,13 +312,7 @@ class MockDataProvider implements DataProvider {
       (m) => m.email.toLowerCase() === email.toLowerCase() && m.status === 'active'
     )
     if (!member) return null
-    return {
-      staffId: member.id,
-      name: member.name,
-      email: member.email,
-      role: member.role,
-      organisation,
-    }
+    return this.toSession(member)
   }
 
   authenticatePortal(customerId: string, email: string): PortalSessionDto | null {

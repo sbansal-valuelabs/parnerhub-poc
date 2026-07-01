@@ -18,8 +18,6 @@ import { getResellerProfile } from '../../services/repository'
 import { useResellerAuth } from '../../context/ResellerAuthContext'
 import { resellerRoleLabels } from '../../types'
 
-const resellerProfile = getResellerProfile()
-
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/customers', icon: Users, label: 'Customers' },
@@ -38,6 +36,7 @@ export function Sidebar() {
   const location = useLocation()
   const navigate = useNavigate()
   const { session, logout } = useResellerAuth()
+  const resellerProfile = getResellerProfile()
 
   const handleLogout = () => {
     logout()

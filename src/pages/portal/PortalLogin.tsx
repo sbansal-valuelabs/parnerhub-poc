@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { Cloud, ArrowRight, Building2, ArrowLeft } from 'lucide-react'
 import { usePortalAuth } from '../../context/PortalAuthContext'
 import { useCustomers } from '../../context/CustomerContext'
-import { listPortalAccounts, getResellerProfile } from '../../services/repository'
+import { listPortalAccounts, getResellerProfileForCustomer } from '../../services/repository'
 import { Button } from '../../components/ui/Button'
 import { inputClassName } from '../../components/ui/Modal'
 
@@ -15,9 +15,13 @@ export function PortalLoginPage() {
   const preselectedCustomer = searchParams.get('customer') ?? ''
   const { login, loginAsDemo } = usePortalAuth()
   const { getCustomer } = useCustomers()
-  const resellerProfile = getResellerProfile()
 
   const [customerId, setCustomerId] = useState(preselectedCustomer || portalAccounts[0].customerId)
+  const selectedCustomer = getCustomer(customerId)
+  const resellerProfile = customerId
+    ? getResellerProfileForCustomer(customerId)
+    : getResellerProfileForCustomer('')
+
   const [email, setEmail] = useState(() => {
     const account = portalAccounts.find((a) => a.customerId === (preselectedCustomer || portalAccounts[0].customerId))
     return account?.email ?? ''
@@ -68,7 +72,7 @@ export function PortalLoginPage() {
           </h1>
           <p className="mt-3 text-base text-emerald-100">
             View licenses, assigned products, and users across your organisation — managed by{' '}
-            {resellerProfile.name}.
+            {selectedCustomer ? resellerProfile.name : 'your IT partner'}.
           </p>
           <ul className="mt-8 space-y-3 text-sm text-emerald-100">
             <li>• View all cloud products in one place — Microsoft, AWS, Google & more</li>
@@ -166,7 +170,10 @@ export function PortalLoginPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-slate-900">{a.customer?.name}</p>
-                    <p className="truncate text-xs text-slate-500">Sign in as {a.name}</p>
+                    <p className="truncate text-xs text-slate-500">
+                      Sign in as {a.name}
+                      {a.customer?.resellerId === 'reseller-horizon' ? ' · Horizon' : ''}
+                    </p>
                   </div>
                   <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" />
                 </button>

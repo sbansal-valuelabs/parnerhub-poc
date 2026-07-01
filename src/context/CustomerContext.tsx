@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import { getDataProvider } from '../services'
 import type { Customer } from '../types'
+import { useResellerAuth } from './ResellerAuthContext'
 
 export interface NewCustomerInput {
   name: string
@@ -21,9 +22,14 @@ interface CustomerContextValue {
 const CustomerContext = createContext<CustomerContextValue | null>(null)
 
 export function CustomerProvider({ children }: { children: ReactNode }) {
+  const { session } = useResellerAuth()
   const [customers, setCustomers] = useState<Customer[]>(() =>
     getDataProvider().listCustomers()
   )
+
+  useEffect(() => {
+    setCustomers(getDataProvider().listCustomers())
+  }, [session?.resellerId])
 
   const addCustomer = useCallback((input: NewCustomerInput): Customer => {
     const customer = getDataProvider().createCustomer(input)
@@ -32,8 +38,8 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const getCustomer = useCallback(
-    (id: string) => customers.find((c) => c.id === id),
-    [customers]
+    (id: string) => getDataProvider().getCustomer(id),
+    []
   )
 
   return (

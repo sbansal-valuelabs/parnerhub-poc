@@ -13,7 +13,13 @@ function findCustomer(query: string) {
       (q.includes('bright') && c.id === 'cust-002') ||
       (q.includes('legal') && c.id === 'cust-002') ||
       (q.includes('coastal') && c.id === 'cust-003') ||
-      (q.includes('health') && c.id === 'cust-003')
+      (q.includes('health') && c.id === 'cust-003') ||
+      (q.includes('metro') && c.id === 'cust-h001') ||
+      (q.includes('finance') && c.id === 'cust-h001') ||
+      (q.includes('summit') && c.id === 'cust-h002') ||
+      (q.includes('retail') && c.id === 'cust-h002') ||
+      (q.includes('riverside') && c.id === 'cust-h003') ||
+      (q.includes('school') && c.id === 'cust-h003')
   )
 }
 

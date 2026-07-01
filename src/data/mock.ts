@@ -1,5 +1,6 @@
 import type { ActivityItem, Customer, Product, Subscription } from '../types'
 import { calcSeatMrr } from '../lib/billing'
+import { RESELLER_NEXUS } from './resellers'
 
 /**
  * Demo customers (use these 3 in walkthroughs):
@@ -13,6 +14,7 @@ import { calcSeatMrr } from '../lib/billing'
 export const customers: Customer[] = [
   {
     id: 'cust-001',
+    resellerId: RESELLER_NEXUS,
     name: 'Acme Manufacturing',
     domain: 'acmemfg.com.au',
     contactName: 'Sarah Chen',
@@ -28,6 +30,7 @@ export const customers: Customer[] = [
   },
   {
     id: 'cust-002',
+    resellerId: RESELLER_NEXUS,
     name: 'Bright Legal Partners',
     domain: 'brightlegal.com.au',
     contactName: 'James Morrison',
@@ -43,6 +46,7 @@ export const customers: Customer[] = [
   },
   {
     id: 'cust-003',
+    resellerId: RESELLER_NEXUS,
     name: 'Coastal Health Group',
     domain: 'coastalhealth.org.au',
     contactName: 'Dr. Priya Nair',
@@ -378,6 +382,7 @@ export const subscriptions: Subscription[] = [
 export const activities: ActivityItem[] = [
   {
     id: 'act-001',
+    resellerId: RESELLER_NEXUS,
     type: 'provision',
     title: 'AWS EC2 provisioned',
     description: 'AWS EC2 & Core Services linked to Acme Manufacturing',
@@ -387,6 +392,7 @@ export const activities: ActivityItem[] = [
   },
   {
     id: 'act-002',
+    resellerId: RESELLER_NEXUS,
     type: 'provision',
     title: 'M365 Business Premium provisioned',
     description: '120 seats × $32.90 = $3,948.00/mo',
@@ -396,6 +402,7 @@ export const activities: ActivityItem[] = [
   },
   {
     id: 'act-003',
+    resellerId: RESELLER_NEXUS,
     type: 'user',
     title: 'Google Workspace users synced',
     description: '10 users onboarded — pool now full (10/10)',
@@ -405,6 +412,7 @@ export const activities: ActivityItem[] = [
   },
   {
     id: 'act-004',
+    resellerId: RESELLER_NEXUS,
     type: 'invoice',
     title: 'Multi-vendor invoice generated',
     description: 'Consolidated Synnex invoice — $10,622.60 portfolio MRR',
@@ -413,6 +421,7 @@ export const activities: ActivityItem[] = [
   },
   {
     id: 'act-005',
+    resellerId: RESELLER_NEXUS,
     type: 'provision',
     title: 'Customer tenant created',
     description: 'Coastal Health Group onboarding initiated',

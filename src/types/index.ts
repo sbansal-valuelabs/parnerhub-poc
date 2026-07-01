@@ -12,6 +12,8 @@ export type ProductCategory =
 
 export interface Customer {
   id: string
+  /** Owning reseller organisation (demo multi-tenancy) */
+  resellerId: string
   name: string
   domain: string
   contactName: string
@@ -59,6 +61,7 @@ export interface Subscription {
 
 export interface ActivityItem {
   id: string
+  resellerId?: string
   type: 'provision' | 'change' | 'suspend' | 'invoice' | 'user'
   title: string
   description: string
@@ -106,6 +109,7 @@ export type ResellerStaffStatus = 'active' | 'invited' | 'deactivated'
 
 export interface ResellerStaff {
   id: string
+  resellerId: string
   name: string
   email: string
   role: ResellerRole

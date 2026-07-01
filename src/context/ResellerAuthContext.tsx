@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
 import { getDataProvider } from '../services'
 import type { ResellerRole } from '../types'
+import { RESELLER_NEXUS } from '../data/resellers'
 
 export interface ResellerSession {
   staffId: string
@@ -8,24 +9,37 @@ export interface ResellerSession {
   email: string
   role: ResellerRole
   organisation: string
+  resellerId: string
 }
 
 interface ResellerAuthContextValue {
   session: ResellerSession | null
   login: (email: string) => boolean
-  loginAsDemo: () => boolean
+  loginAsDemo: (resellerId?: string) => boolean
   logout: () => void
 }
 
 const ResellerAuthContext = createContext<ResellerAuthContextValue | null>(null)
 
+function parseStoredSession(): ResellerSession | null {
+  const stored = sessionStorage.getItem('reseller-session')
+  if (!stored) return null
+  const parsed = JSON.parse(stored) as ResellerSession
+  if (!parsed.resellerId) {
+    parsed.resellerId = RESELLER_NEXUS
+  }
+  return parsed
+}
+
 export function ResellerAuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<ResellerSession | null>(() => {
-    const stored = sessionStorage.getItem('reseller-session')
-    return stored ? JSON.parse(stored) : null
+    const parsed = parseStoredSession()
+    if (parsed) getDataProvider().setActiveReseller(parsed.resellerId)
+    return parsed
   })
 
   const persist = (s: ResellerSession | null) => {
+    getDataProvider().setActiveReseller(s?.resellerId ?? null)
     if (s) sessionStorage.setItem('reseller-session', JSON.stringify(s))
     else sessionStorage.removeItem('reseller-session')
     setSession(s)
@@ -38,8 +52,10 @@ export function ResellerAuthProvider({ children }: { children: ReactNode }) {
     return true
   }, [])
 
-  const loginAsDemo = useCallback((): boolean => {
-    persist(getDataProvider().getCurrentResellerUser())
+  const loginAsDemo = useCallback((resellerId: string = RESELLER_NEXUS): boolean => {
+    const result = getDataProvider().getDefaultResellerUser(resellerId)
+    if (!result) return false
+    persist(result)
     return true
   }, [])
 

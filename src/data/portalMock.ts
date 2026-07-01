@@ -21,6 +21,10 @@ export const tenantUsers: TenantUser[] = [
   { id: 'u-012', customerId: 'cust-002', name: 'Ryan O\'Brien', email: 'r.obrien@brightlegal.com.au', department: 'Legal', licenses: ['Microsoft 365 E3'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-22T11:00:00' },
   { id: 'u-013', customerId: 'cust-002', name: 'Nina Gupta', email: 'n.gupta@brightlegal.com.au', department: 'Marketing', licenses: ['Google Workspace Business Plus'], vendor: 'google', status: 'active', lastSignIn: '2025-06-22T14:00:00' },
   { id: 'u-014', customerId: 'cust-002', name: 'Olivia Hart', email: 'o.hart@brightlegal.com.au', department: 'Legal', licenses: ['Adobe Acrobat Sign Solutions'], vendor: 'adobe', status: 'active', lastSignIn: '2025-06-21T09:30:00' },
+  // Metro Finance — sample users
+  { id: 'u-h001', customerId: 'cust-h001', name: 'Tom Bradley', email: 't.bradley@metrofinance.com.au', department: 'IT', licenses: ['Microsoft 365 Business Standard', 'Microsoft Defender for Endpoint P2'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T08:00:00' },
+  { id: 'u-h002', customerId: 'cust-h001', name: 'Nina Kowalski', email: 'n.kowalski@metrofinance.com.au', department: 'Sales', licenses: ['Salesforce Sales Cloud Professional'], vendor: 'salesforce', status: 'active', lastSignIn: '2025-06-23T15:30:00' },
+  { id: 'u-h003', customerId: 'cust-h001', name: 'Grant Ellis', email: 'g.ellis@metrofinance.com.au', department: 'Finance', licenses: ['Microsoft 365 Business Standard'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T07:45:00' },
 ]
 
 export const licensePools: LicensePool[] = [
@@ -33,11 +37,21 @@ export const licensePools: LicensePool[] = [
   { customerId: 'cust-002', productName: 'Microsoft 365 E3', sku: 'O365_E3', vendor: 'microsoft', total: 65, assigned: 63, available: 2 },
   { customerId: 'cust-002', productName: 'Adobe Acrobat Sign Solutions', sku: 'ADOBE_ACROBAT_SIGN', vendor: 'adobe', total: 40, assigned: 38, available: 2 },
   { customerId: 'cust-002', productName: 'Google Workspace Business Plus', sku: 'GWS_BUSINESS_PLUS', vendor: 'google', total: 10, assigned: 10, available: 0 },
+  // Metro Finance
+  { customerId: 'cust-h001', productName: 'Microsoft 365 Business Standard', sku: 'O365_BUSINESS_STANDARD', vendor: 'microsoft', total: 55, assigned: 52, available: 3 },
+  { customerId: 'cust-h001', productName: 'Microsoft Defender for Endpoint P2', sku: 'DEFENDER_ENDPOINT_P2', vendor: 'microsoft', total: 55, assigned: 50, available: 5 },
+  { customerId: 'cust-h001', productName: 'Salesforce Sales Cloud Professional', sku: 'SF_SALES_PRO', vendor: 'salesforce', total: 18, assigned: 16, available: 2 },
+  { customerId: 'cust-h001', productName: 'Azure Subscription', sku: 'AZURE_PAYG', vendor: 'microsoft', total: 0, assigned: 0, available: 0 },
+  // Summit Retail
+  { customerId: 'cust-h002', productName: 'Google Workspace Business Plus', sku: 'GWS_BUSINESS_PLUS', vendor: 'google', total: 35, assigned: 32, available: 3 },
+  { customerId: 'cust-h002', productName: 'Microsoft 365 Business Standard', sku: 'O365_BUSINESS_STANDARD', vendor: 'microsoft', total: 25, assigned: 22, available: 3 },
+  { customerId: 'cust-h002', productName: 'AWS Business Support', sku: 'AWS_BUSINESS_SUPPORT', vendor: 'aws', total: 0, assigned: 0, available: 0 },
 ]
 
 export const portalAccounts = [
   { customerId: 'cust-001', email: 's.chen@acmemfg.com.au', name: 'Sarah Chen', role: 'IT Admin' },
   { customerId: 'cust-002', email: 'j.morrison@brightlegal.com.au', name: 'James Morrison', role: 'Office Admin' },
+  { customerId: 'cust-h001', email: 't.bradley@metrofinance.com.au', name: 'Tom Bradley', role: 'IT Manager' },
 ]
 
 /** Consumption SKUs have no seat pool — spend is on subscription MRR */

@@ -66,9 +66,9 @@ function CustomerPortalApp() {
 
 export default function App() {
   return (
-    <CustomerProvider>
-      <TeamProvider>
-        <ResellerAuthProvider>
+    <ResellerAuthProvider>
+      <CustomerProvider>
+        <TeamProvider>
           <PortalAuthProvider>
             <Routes>
               {/* Public */}
@@ -97,8 +97,8 @@ export default function App() {
               />
             </Routes>
           </PortalAuthProvider>
-        </ResellerAuthProvider>
-      </TeamProvider>
-    </CustomerProvider>
+        </TeamProvider>
+      </CustomerProvider>
+    </ResellerAuthProvider>
   )
 }

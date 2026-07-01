@@ -109,6 +109,24 @@ class LiveDataProvider implements DataProvider {
     return this.notReady()
   }
 
+  getResellerProfileById(_resellerId: string) {
+    return this.getResellerProfile()
+  }
+
+  setActiveReseller(_resellerId: string | null) {}
+
+  getActiveResellerId() {
+    return null
+  }
+
+  listDemoResellers() {
+    return this.notReady()
+  }
+
+  getDefaultResellerUser(_resellerId: string) {
+    return this.notReady()
+  }
+
   listActivities() {
     void integrationsApi.fetchActivities()
     return this.notReady()

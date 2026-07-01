@@ -33,6 +33,20 @@ export function getResellerProfile() {
   return getDataProvider().getResellerProfile()
 }
 
+export function getResellerProfileForCustomer(customerId: string) {
+  const customer = getDataProvider().getCustomer(customerId)
+  if (!customer) return getDataProvider().getResellerProfile()
+  return getDataProvider().getResellerProfileById(customer.resellerId)
+}
+
+export function getResellerProfileById(resellerId: string) {
+  return getDataProvider().getResellerProfileById(resellerId)
+}
+
+export function listDemoResellers() {
+  return getDataProvider().listDemoResellers()
+}
+
 export function getPortfolioSummary() {
   return getDataProvider().getPortfolioSummary()
 }
