@@ -33,47 +33,25 @@ class LiveDataProvider implements DataProvider {
     team: null as ResellerStaff[] | null,
   }
 
-  private async ensureProducts() {
-    if (!this.cache.products) this.cache.products = await catalogApi.fetchProducts()
-    return this.cache.products
-  }
-
-  private async ensureCustomers() {
-    if (!this.cache.customers) this.cache.customers = await customersApi.fetchCustomers()
-    return this.cache.customers
-  }
-
-  private async ensureSubscriptions() {
-    if (!this.cache.subscriptions) {
-      this.cache.subscriptions = await subscriptionsApi.fetchSubscriptions()
-    }
-    return this.cache.subscriptions
-  }
-
-  private async ensureTeam() {
-    if (!this.cache.team) this.cache.team = await teamApi.fetchResellerTeam()
-    return this.cache.team
-  }
-
   private notReady(): never {
     throw new Error(
-      'Live data mode requires async loading. Use hooks from src/hooks/ or set VITE_DATA_MODE=mock for the demo.'
+      'Live data mode requires async loading. Call liveDataProvider.hydrate() first or set VITE_DATA_MODE=mock for the demo.'
     )
   }
 
   listProducts(): Product[] {
     if (this.cache.products) return this.cache.products
-    this.notReady()
+    return this.notReady()
   }
 
   getMarketplaceStats() {
     void catalogApi.fetchMarketplaceStats()
-    this.notReady()
+    return this.notReady()
   }
 
   listCustomers(): Customer[] {
     if (this.cache.customers) return this.cache.customers
-    this.notReady()
+    return this.notReady()
   }
 
   getCustomer(id: string) {
@@ -82,12 +60,12 @@ class LiveDataProvider implements DataProvider {
 
   createCustomer(input: CreateCustomerRequest): Customer {
     void customersApi.createCustomer(input)
-    this.notReady()
+    return this.notReady()
   }
 
   listSubscriptions(): Subscription[] {
     if (this.cache.subscriptions) return this.cache.subscriptions
-    this.notReady()
+    return this.notReady()
   }
 
   listSubscriptionsForCustomer(customerId: string) {
@@ -96,7 +74,7 @@ class LiveDataProvider implements DataProvider {
 
   getPortfolioSummary() {
     void subscriptionsApi.fetchPortfolioSummary()
-    this.notReady()
+    return this.notReady()
   }
 
   getCustomerMrr(customerId: string): number {
@@ -128,57 +106,57 @@ class LiveDataProvider implements DataProvider {
 
   getResellerProfile() {
     void integrationsApi.fetchResellerProfile()
-    this.notReady()
+    return this.notReady()
   }
 
   listActivities() {
     void integrationsApi.fetchActivities()
-    this.notReady()
+    return this.notReady()
   }
 
   listIntegrations() {
     void integrationsApi.fetchIntegrations()
-    this.notReady()
+    return this.notReady()
   }
 
   listResellerTeam(): ResellerStaff[] {
     if (this.cache.team) return this.cache.team
-    this.notReady()
+    return this.notReady()
   }
 
   getCurrentResellerUser(): ResellerSessionDto {
     void teamApi.fetchResellerTeam()
-    this.notReady()
+    return this.notReady()
   }
 
   addStaff(input: NewStaffInput): ResellerStaff {
     void teamApi.createStaffMember(input)
-    this.notReady()
+    return this.notReady()
   }
 
   deactivateStaff(id: string) {
     void teamApi.deactivateStaffMember(id)
-    this.notReady()
+    return this.notReady()
   }
 
   resendInvite(id: string) {
     void teamApi.resendStaffInvite(id)
-    this.notReady()
+    return this.notReady()
   }
 
   listPortalAccounts() {
     void portalApi.fetchPortalAccounts()
-    this.notReady()
+    return this.notReady()
   }
 
   getUsersForCustomer(customerId: string) {
     void portalApi.fetchTenantUsers(customerId)
-    this.notReady()
+    return this.notReady()
   }
 
   getLicensesForCustomer(customerId: string) {
     void portalApi.fetchLicensePools(customerId)
-    this.notReady()
+    return this.notReady()
   }
 
   isConsumptionSku(sku: string) {
@@ -187,21 +165,21 @@ class LiveDataProvider implements DataProvider {
 
   authenticateReseller(email: string): ResellerSessionDto | null {
     void authApi.loginReseller(email)
-    this.notReady()
+    return this.notReady()
   }
 
   authenticatePortal(customerId: string, email: string): PortalSessionDto | null {
     void authApi.loginPortal(customerId, email)
-    this.notReady()
+    return this.notReady()
   }
 
-  getPortalDemoAccount(customerId: string) {
-    return this.listPortalAccounts().find((a) => a.customerId === customerId)
+  getPortalDemoAccount(_customerId: string) {
+    return undefined
   }
 
   submitProvisionOrder(order: ProvisionOrderRequest): ProvisionOrderResponse {
     void provisionApi.submitProvisionOrder(order)
-    this.notReady()
+    return this.notReady()
   }
 
   /** Pre-warm caches — call from App bootstrap when VITE_DATA_MODE=live */
