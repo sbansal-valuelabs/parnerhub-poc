@@ -37,11 +37,25 @@ type StepKey = (typeof allSteps)[number]['key']
 
 function initialStepIndex(
   preselectedCustomer: string | null,
-  preselectedProduct: string | null
+  hasProducts: boolean
 ): number {
-  if (preselectedCustomer && preselectedProduct) return 2
-  if (preselectedCustomer || preselectedProduct) return 1
+  if (preselectedCustomer && hasProducts) return 2
+  if (preselectedCustomer || hasProducts) return 1
   return 0
+}
+
+function buildInitialCart(
+  productIds: string[],
+  catalog: ReturnType<typeof listProducts>
+): CartItem[] {
+  return productIds
+    .map((id) => catalog.find((p) => p.id === id))
+    .filter((p): p is NonNullable<typeof p> => !!p)
+    .map((product) => ({
+      product,
+      seats: product.minSeats,
+      billingCycle: 'monthly' as BillingCycle,
+    }))
 }
 
 export function ProvisionPage() {
@@ -50,18 +64,17 @@ export function ProvisionPage() {
   const { customers } = useCustomers()
   const preselectedCustomer = searchParams.get('customer')
   const preselectedProduct = searchParams.get('product')
+  const preselectedProductIds = useMemo(() => {
+    const fromList = searchParams.get('products')?.split(',').map((s) => s.trim()).filter(Boolean) ?? []
+    if (preselectedProduct) return [preselectedProduct]
+    return fromList
+  }, [searchParams, preselectedProduct])
 
   const [stepIndex, setStepIndex] = useState(() =>
-    initialStepIndex(preselectedCustomer, preselectedProduct)
+    initialStepIndex(preselectedCustomer, preselectedProductIds.length > 0)
   )
   const [selectedCustomerId, setSelectedCustomerId] = useState(preselectedCustomer ?? '')
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    if (preselectedProduct) {
-      const product = products.find((p) => p.id === preselectedProduct)
-      if (product) return [{ product, seats: product.minSeats, billingCycle: 'monthly' as BillingCycle }]
-    }
-    return []
-  })
+  const [cart, setCart] = useState<CartItem[]>(() => buildInitialCart(preselectedProductIds, products))
   const [customerSearch, setCustomerSearch] = useState('')
   const [productSearch, setProductSearch] = useState('')
   const [completed, setCompleted] = useState(false)

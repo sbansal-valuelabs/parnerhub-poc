@@ -10,6 +10,7 @@ import { useCustomers } from '../../context/CustomerContext'
 import { listSubscriptions, getLicensesForCustomer, getUsersForCustomer, isConsumptionSku } from '../../services/repository'
 import { getCustomerMrr } from '../../data/customerStats'
 import { formatCurrency, formatDate } from '../../lib/utils'
+import { PortalAiCard } from '../../components/ai/PortalAiCard'
 
 export function PortalDashboardPage() {
   const subscriptions = listSubscriptions()
@@ -70,6 +71,8 @@ export function PortalDashboardPage() {
           </Link>
         </div>
       )}
+
+      <PortalAiCard />
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard

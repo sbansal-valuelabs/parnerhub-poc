@@ -27,6 +27,7 @@ import { VendorBadge } from '../components/ui/VendorBadge'
 import { useCustomers } from '../context/CustomerContext'
 import { formatCurrency, formatRelativeTime } from '../lib/utils'
 import type { ActivityItem } from '../types'
+import { AiInsightBanner } from '../components/ai/AiInsightBanner'
 
 const activityIcons: Record<ActivityItem['type'], typeof Package> = {
   provision: Package,
@@ -75,6 +76,8 @@ export function DashboardPage() {
           </Link>
         }
       />
+
+      <AiInsightBanner />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard

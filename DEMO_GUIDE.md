@@ -134,10 +134,31 @@ Computed live from active subscriptions (`getCustomerMrr()`), so customer list a
 2. **Customers → Acme** — Walk through **$6,200** MRR, 4 subs, 118 users  
 3. **Subscriptions** — Show line items; verify Acme rows sum to $6,200  
 4. **Cloud Marketplace** — Filter AWS, show margin % and activation time  
-5. **Provision** — Coastal Health: add Microsoft + AWS, accept vendor agreements (MCA, AWS terms), confirm  
-6. **Team** — Reseller staff roles (Admin vs Provisioning)  
-7. **Customer portal** — Login as **Acme / Sarah Chen** → Products, Licenses, low-seat alert  
-8. **Customer portal** — Login as **Bright Legal / James Morrison** → Google pool full  
+4. **Provision** — Coastal Health: add Microsoft + AWS → **Agreements** step shows **AI agreement assistant** (summarise + per-vendor explain)  
+5. **Team** — Reseller staff roles (Admin vs Provisioning)  
+6. **Customer portal** — Login as **Acme / Sarah Chen** → Products, Licenses, **License assistant**  
+7. **Customer portal** — Login as **Bright Legal / James Morrison** → Google pool full  
+
+**PartnerHub AI entry points**
+- **Floating ✨ button** (bottom-right) — portfolio insights & provisioning copilot (not in sidebar)
+- **Dashboard** — AI portfolio insights banner
+- **Provision → Agreements** — AI agreement assistant panel (visible on step 4)
+
+---
+
+## PartnerHub AI (demo agent)
+
+Reseller app includes a rule-based **PartnerHub AI** assistant (sidebar, floating button, dashboard insight cards). It reads portfolio data via `src/services/repository` — same path production agents would use.
+
+**Try in the reseller portal:**
+1. Dashboard → review **AI portfolio insights** banner  
+2. Click **PartnerHub AI** → *"What needs attention?"*  
+3. *"Provision Coastal Health with M365 and AWS"* → **Open provision wizard**  
+4. *"Explain Microsoft MCA"* before the agreements step  
+
+**Customer portal:** Acme or Bright Legal → **License assistant** on Overview (*"How many licenses are available?"*)
+
+Agent code: `src/ai/` · UI: `src/components/ai/` · Production: swap `runAgent()` for an LLM with tool calling.
 
 ---
 

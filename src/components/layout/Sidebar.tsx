@@ -15,10 +15,10 @@ import {
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { getResellerProfile } from '../../services/repository'
-
-const resellerProfile = getResellerProfile()
 import { useResellerAuth } from '../../context/ResellerAuthContext'
 import { resellerRoleLabels } from '../../types'
+
+const resellerProfile = getResellerProfile()
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -94,19 +94,18 @@ export function Sidebar() {
       </nav>
 
       <div className="border-t border-white/10 px-3 py-3">
-        <div className="mb-2 rounded-lg bg-white/5 px-3 py-2">
-          <p className="truncate text-xs font-medium text-white">{session?.name}</p>
-          <p className="text-[10px] text-brand-400">
-            {session?.role ? resellerRoleLabels[session.role] : ''}
+        {session && (
+          <p className="mb-2 truncate px-2 text-xs text-brand-300">
+            {session.name} · {session.role ? resellerRoleLabels[session.role] : ''}
           </p>
-        </div>
+        )}
         <Link
           to="/portal/login"
           target="_blank"
-          className="mb-2 flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-brand-300 transition-colors hover:bg-white/5 hover:text-white"
+          className="mb-1 flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-brand-300 transition-colors hover:bg-white/5 hover:text-white"
         >
-          <ExternalLink className="h-4 w-4" />
-          Customer portal
+          <ExternalLink className="h-4 w-4 shrink-0" />
+          Client portal
         </Link>
         {bottomNav.map(({ to, icon: Icon, label }) => (
           <NavLink
@@ -114,15 +113,15 @@ export function Sidebar() {
             to={to}
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-brand-300 transition-colors hover:bg-white/5 hover:text-white"
           >
-            <Icon className="h-4 w-4" />
+            <Icon className="h-4 w-4 shrink-0" />
             {label}
           </NavLink>
         ))}
         <button
           onClick={handleLogout}
-          className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-brand-300 transition-colors hover:bg-white/5 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-brand-300 transition-colors hover:bg-white/5 hover:text-white"
         >
-          <LogOut className="h-4 w-4" />
+          <LogOut className="h-4 w-4 shrink-0" />
           Sign out
         </button>
       </div>

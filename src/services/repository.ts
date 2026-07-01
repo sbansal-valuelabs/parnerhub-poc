@@ -5,6 +5,10 @@
 import { getDataProvider } from './index'
 import type { CustomerStats } from '../types'
 
+export function listCustomers() {
+  return getDataProvider().listCustomers()
+}
+
 export function listProducts() {
   return getDataProvider().listProducts()
 }

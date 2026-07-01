@@ -6,6 +6,8 @@ import { VendorBadge } from '../ui/VendorBadge'
 import type { VendorAgreement } from '../../data/vendorAgreements'
 import { formatAcceptanceLabel } from '../../data/vendorAgreements'
 import { VendorAgreementDocument } from './VendorAgreementDocument'
+import { AgreementAiPanel } from '../ai/AgreementAiPanel'
+import type { CloudVendor } from '../../types'
 import { cn } from '../../lib/utils'
 
 interface VendorAgreementsStepProps {
@@ -23,10 +25,17 @@ export function VendorAgreementsStep({
 }: VendorAgreementsStepProps) {
   const [viewingAgreement, setViewingAgreement] = useState<VendorAgreement | null>(null)
   const acceptedCount = agreements.filter((a) => acceptedIds.has(a.id)).length
+  const vendors = [...new Set(agreements.map((a) => a.vendor))] as CloudVendor[]
 
   return (
     <>
       <Card>
+        <AgreementAiPanel
+          vendors={vendors}
+          customerName={customerName}
+          agreements={agreements}
+        />
+
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <h2 className="text-base font-semibold text-slate-900">Vendor agreements</h2>

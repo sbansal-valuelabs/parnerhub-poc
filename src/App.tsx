@@ -24,10 +24,14 @@ import { PortalLicensesPage } from './pages/portal/PortalLicenses'
 import { PortalUsersPage } from './pages/portal/PortalUsers'
 import { PortalSupportPage } from './pages/portal/PortalSupport'
 
+import { AiAssistantProvider } from './context/AiAssistantContext'
+import { AiAssistantPanel, AiAssistantFab } from './components/ai/AiAssistantPanel'
+
 function ResellerApp() {
   return (
-    <AppLayout>
-      <Routes>
+    <AiAssistantProvider>
+      <AppLayout>
+        <Routes>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/customers" element={<CustomersPage />} />
         <Route path="/customers/:id" element={<CustomerDetailPage />} />
@@ -38,8 +42,11 @@ function ResellerApp() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/help" element={<HelpPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </AppLayout>
+        </Routes>
+      </AppLayout>
+      <AiAssistantPanel />
+      <AiAssistantFab />
+    </AiAssistantProvider>
   )
 }
 
