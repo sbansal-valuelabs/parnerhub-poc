@@ -43,8 +43,8 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-brand-950 text-white">
-      <Link to="/" className="flex h-16 items-center gap-3 border-b border-white/10 px-5 transition-colors hover:bg-white/5">
+    <aside className="fixed inset-y-0 left-0 z-30 flex w-[var(--sidebar-width)] flex-col bg-brand-950 text-white">
+      <Link to="/" className="flex h-14 items-center gap-2.5 border-b border-white/10 px-4 transition-colors hover:bg-white/5">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500">
           <Cloud className="h-5 w-5" />
         </div>
@@ -144,8 +144,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="pl-64">
-        <div className="mx-auto max-w-7xl px-8 py-8">{children}</div>
+      <main className="pl-[var(--sidebar-width)]">
+        <div className="page-shell">{children}</div>
       </main>
     </div>
   )

@@ -3,8 +3,41 @@
 @tailwind utilities;
 
 @layer base {
+  /*
+   * Fluid UI density — scales with viewport width (not a fixed OS zoom).
+   * ~16px on large desktops (1920px+), ~14px on typical 150%-scaled laptops (~1280px),
+   * ~13px floor on smaller screens. All Tailwind rem units follow automatically.
+   */
+  html {
+    font-size: clamp(0.8125rem, 0.5rem + 0.42vw, 1rem);
+  }
+
+  :root {
+    --page-gutter: clamp(1rem, 2vw, 1.5rem);
+    --page-block: clamp(1.25rem, 2.5vw, 2rem);
+    --content-max: 72rem;
+    --sidebar-width: 14rem;
+  }
+
   body {
     @apply bg-surface-muted text-slate-800 antialiased;
+  }
+}
+
+@layer components {
+  .page-shell {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+    padding-block: var(--page-block);
+  }
+
+  .marketing-shell {
+    width: 100%;
+    max-width: min(64rem, calc(100% - 2 * var(--page-gutter)));
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
   }
 }
 

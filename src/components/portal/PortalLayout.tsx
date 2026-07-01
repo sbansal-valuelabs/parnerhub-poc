@@ -34,7 +34,7 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-surface-border bg-white">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <div className="mx-auto flex h-14 max-w-[var(--content-max)] items-center justify-between px-[var(--page-gutter)]">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-sm font-bold text-white">
               {customer?.name.charAt(0) ?? 'P'}
@@ -60,8 +60,8 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <div className="mx-auto max-w-6xl px-6 py-8">
-        <nav className="mb-8 flex gap-1 overflow-x-auto border-b border-surface-border pb-px">
+      <div className="page-shell">
+        <nav className="mb-6 flex gap-1 overflow-x-auto border-b border-surface-border pb-px">
           {navItems.map(({ to, icon: Icon, label, end }) => (
             <NavLink
               key={to}
@@ -86,7 +86,7 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       <footer className="border-t border-surface-border bg-white py-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 text-xs text-slate-400">
+        <div className="mx-auto flex max-w-[var(--content-max)] items-center justify-between px-[var(--page-gutter)]">
           <span>Cloud services managed by {resellerProfile.name} via Synnex</span>
           <Link to="/" className="flex items-center gap-1 text-slate-500 hover:text-slate-700">
             Home

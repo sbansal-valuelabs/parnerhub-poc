@@ -49,7 +49,7 @@ export function PortalLoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden w-1/2 flex-col justify-between bg-gradient-to-br from-emerald-700 to-emerald-900 p-12 text-white lg:flex">
+      <div className="hidden w-1/2 flex-col justify-between bg-gradient-to-br from-emerald-700 to-emerald-900 p-8 text-white lg:flex">
         <div>
           <Link to="/" className="flex items-center gap-2 text-emerald-200 hover:text-white">
             <ArrowLeft className="h-4 w-4" />
@@ -61,10 +61,10 @@ export function PortalLoginPage() {
           </div>
         </div>
         <div>
-          <h1 className="text-3xl font-bold leading-tight">
+          <h1 className="text-2xl font-bold leading-tight">
             Manage your cloud services in one place
           </h1>
-          <p className="mt-4 text-lg text-emerald-100">
+          <p className="mt-3 text-base text-emerald-100">
             View licenses, assigned products, and users across your organisation — managed by{' '}
             {resellerProfile.name}.
           </p>
@@ -77,7 +77,7 @@ export function PortalLoginPage() {
         <p className="text-sm text-emerald-300">Demo environment — no real authentication required</p>
       </div>
 
-      <div className="flex flex-1 flex-col justify-center px-6 py-12 sm:px-12">
+      <div className="flex flex-1 flex-col justify-center px-5 py-8 sm:px-8">
         <div className="mx-auto w-full max-w-md">
           <Link to="/" className="mb-8 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700 lg:hidden">
             <ArrowLeft className="h-4 w-4" />

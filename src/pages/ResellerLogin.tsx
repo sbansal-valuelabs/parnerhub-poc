@@ -31,7 +31,7 @@ export function ResellerLoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden w-1/2 flex-col justify-between bg-gradient-to-br from-brand-800 to-brand-950 p-12 text-white lg:flex">
+      <div className="hidden w-1/2 flex-col justify-between bg-gradient-to-br from-brand-800 to-brand-950 p-8 text-white lg:flex">
         <div>
           <Link to="/" className="flex items-center gap-2 text-brand-200 hover:text-white">
             <ArrowLeft className="h-4 w-4" />
@@ -43,10 +43,10 @@ export function ResellerLoginPage() {
           </div>
         </div>
         <div>
-          <h1 className="text-3xl font-bold leading-tight">
+          <h1 className="text-2xl font-bold leading-tight">
             Manage your cloud business from one place
           </h1>
-          <p className="mt-4 text-lg text-brand-200">
+          <p className="mt-3 text-base text-brand-200">
             {resellerProfile.name} · {resellerProfile.tier} · via {resellerProfile.distributor}
           </p>
           <ul className="mt-8 space-y-3 text-sm text-brand-100">
@@ -58,7 +58,7 @@ export function ResellerLoginPage() {
         <p className="text-sm text-brand-300">Demo — any password accepted</p>
       </div>
 
-      <div className="flex flex-1 flex-col justify-center px-6 py-12 sm:px-12">
+      <div className="flex flex-1 flex-col justify-center px-5 py-8 sm:px-8">
         <div className="mx-auto w-full max-w-md">
           <Link to="/" className="mb-8 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700 lg:hidden">
             <ArrowLeft className="h-4 w-4" />
