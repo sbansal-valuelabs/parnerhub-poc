@@ -19,7 +19,7 @@ export function PortalLicensesPage() {
     <>
       <PortalPageHeader
         title="Licenses"
-        subtitle="Unified license view across Microsoft, AWS, Google, and all your vendors"
+        subtitle="Unified license view across Microsoft CSP, Azure, Google Workspace, Google Cloud, and Acronis"
         action={
           <Link to="/portal/support">
             <Button className="bg-emerald-600 hover:bg-emerald-700">Request licenses</Button>

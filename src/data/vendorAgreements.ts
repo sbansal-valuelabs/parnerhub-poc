@@ -21,7 +21,7 @@ export interface VendorAgreement {
 export const vendorAgreements: VendorAgreement[] = [
   {
     id: 'microsoft-mca',
-    vendor: 'microsoft',
+    vendor: 'microsoft-csp',
     title: 'Microsoft Customer Agreement (MCA)',
     version: '2024.1',
     effectiveDate: '1 January 2024',
@@ -45,8 +45,8 @@ export const vendorAgreements: VendorAgreement[] = [
       {
         heading: '2. Scope of services',
         paragraphs: [
-          'Customer orders Microsoft online services including Microsoft 365, Azure, Dynamics 365, and Power Platform subscriptions as specified in the order. Services are subject to the applicable Microsoft Product Terms and Online Services Terms incorporated by reference.',
-          'Licences are user- or capacity-based as defined per SKU. Consumption services (e.g. Azure) are billed on actual usage in arrears.',
+          'Customer orders Microsoft online services including Microsoft 365, Defender, and Dynamics 365 subscriptions as specified in the order. Services are subject to the applicable Microsoft Product Terms and Online Services Terms incorporated by reference.',
+          'Licences are user- or capacity-based as defined per SKU. Services are provisioned under the Microsoft Cloud Solution Provider programme.',
         ],
       },
       {
@@ -80,12 +80,12 @@ export const vendorAgreements: VendorAgreement[] = [
   },
   {
     id: 'microsoft-csp-auth',
-    vendor: 'microsoft',
+    vendor: 'microsoft-csp',
     title: 'CSP Partner Authorisation',
     version: '1.0',
     effectiveDate: '1 January 2024',
     summary:
-      'Authorises Synnex and the reseller to provision and manage Microsoft subscriptions for this tenant.',
+      'Authorises Synnex and the reseller to provision and manage Microsoft CSP subscriptions for this tenant.',
     highlights: [
       'Delegated admin relationship required',
       'Billing via distributor credit line',
@@ -121,64 +121,58 @@ export const vendorAgreements: VendorAgreement[] = [
     ],
   },
   {
-    id: 'aws-customer-agreement',
-    vendor: 'aws',
-    title: 'AWS Customer Agreement',
-    version: '2024.3',
-    effectiveDate: '15 March 2024',
+    id: 'microsoft-azure-enrollment',
+    vendor: 'microsoft-azure',
+    title: 'Microsoft Azure Subscription Agreement',
+    version: '2024.2',
+    effectiveDate: '1 February 2024',
     summary:
-      'Governs use of AWS services, including acceptable use, data processing, and consumption billing.',
+      'Governs Azure consumption services, billing, and the shared responsibility model for infrastructure workloads.',
     highlights: [
-      'Pay-as-you-go consumption billed monthly',
-      'Customer owns data; AWS shared responsibility model applies',
-      'Reseller acts as billing partner via distributor',
+      'Pay-as-you-go consumption billed monthly in arrears',
+      'Customer owns data; Microsoft shared responsibility model applies',
+      'Billing aggregated via Synnex distributor credit line',
     ],
     acceptanceLabel:
-      'I confirm {customer} agrees to the AWS Customer Agreement and Service Terms for linked accounts.',
+      'I confirm {customer} accepts the Microsoft Azure subscription terms and Online Services Terms for this enrollment.',
     documentBody: [
       {
         heading: '1. Agreement overview',
         paragraphs: [
-          'This AWS Customer Agreement governs Customer\'s use of Amazon Web Services offered under the linked AWS account(s) created or managed through the Partner order. The AWS Service Terms, Acceptable Use Policy, and Privacy Notice are incorporated by reference.',
+          'This agreement governs Customer\'s use of Microsoft Azure services ordered through the Partner and Synnex. Microsoft Online Services Terms, Acceptable Use Policy, and Product Terms are incorporated by reference.',
         ],
       },
       {
-        heading: '2. Account structure',
+        heading: '2. Enrollment & accounts',
         paragraphs: [
-          'Customer receives a dedicated AWS account (or organisation member account) for isolation and billing. Reseller may assume a cross-account IAM role for provisioning and support as defined in the AWS Channel Partner programme.',
+          'Customer receives an Azure enrollment linked to their organisation. Reseller may hold appropriate RBAC roles for provisioning, cost management, and support within the Azure Channel Partner programme.',
         ],
       },
       {
         heading: '3. Pricing & billing',
         paragraphs: [
-          'Services are billed on consumption. Estimated spend is shown at order time; actual charges depend on usage. Billing currency is AUD unless otherwise configured. Invoices flow: AWS → Synnex → Reseller → Customer.',
+          'Services are billed on consumption. Estimated spend may be shown at order time; actual charges depend on usage. Billing currency is AUD unless otherwise configured. Invoices flow: Microsoft → Synnex → Reseller → Customer.',
         ],
       },
       {
         heading: '4. Shared responsibility',
         paragraphs: [
-          'AWS is responsible for security of the cloud infrastructure. Customer is responsible for security in the cloud, including IAM configuration, encryption choices, and network controls.',
-        ],
-      },
-      {
-        heading: '5. Termination',
-        paragraphs: [
-          'Customer may close the account subject to settlement of outstanding charges. Reseller will assist with de-provisioning and data export where applicable.',
+          'Microsoft is responsible for security of the cloud platform. Customer is responsible for security in the cloud, including identity configuration, encryption choices, and network controls.',
         ],
       },
     ],
   },
   {
     id: 'google-workspace-terms',
-    vendor: 'google',
-    title: 'Google Workspace / Cloud Terms',
+    vendor: 'google-workspace',
+    title: 'Google Workspace Terms of Service',
     version: '2024.2',
     effectiveDate: '1 February 2024',
     summary:
-      'Covers Google Workspace licensing, admin console access, and Google Cloud Platform where applicable.',
+      'Covers Google Workspace licensing, domain verification, admin delegation, and data processing.',
     highlights: [
       'Domain verification required before activation',
-      'Super-admin delegated to partner for provisioning',
+      'Super-admin may be delegated to partner for provisioning',
       'Data processing terms included for AU region',
     ],
     acceptanceLabel:
@@ -187,7 +181,7 @@ export const vendorAgreements: VendorAgreement[] = [
       {
         heading: '1. Services',
         paragraphs: [
-          'Google Workspace subscriptions include Gmail, Drive, Meet, Calendar, and Admin console as per ordered edition. Google Cloud Platform services, if ordered, are subject to separate GCP Service Terms.',
+          'Google Workspace subscriptions include Gmail, Drive, Meet, Calendar, and Admin console as per ordered edition. Services are provisioned under Google\'s reseller programme via Synnex.',
         ],
       },
       {
@@ -199,121 +193,85 @@ export const vendorAgreements: VendorAgreement[] = [
       {
         heading: '3. Admin delegation',
         paragraphs: [
-          'Customer may delegate reseller as a partial or full admin for licence management. Customer retains ultimate control of super-admin accounts and org policies.',
+          'Customer may delegate reseller as a partial or full admin for licence management. Customer retains ultimate control of super-admin accounts and organisation policies.',
         ],
       },
       {
         heading: '4. Data processing',
         paragraphs: [
-          'Google processes data in accordance with the Google Workspace/Data Processing Amendment. Customer data for AU tenants is stored in Google\'s Sydney region unless Customer configures multi-region policies.',
+          'Google processes data in accordance with the Google Workspace Data Processing Amendment. Customer data for AU tenants is stored in Google\'s Sydney region unless Customer configures multi-region policies.',
         ],
       },
     ],
   },
   {
-    id: 'adobe-enterprise-terms',
-    vendor: 'adobe',
-    title: 'Adobe Enterprise Terms & VIP',
+    id: 'google-cloud-terms',
+    vendor: 'google-cloud',
+    title: 'Google Cloud Platform Terms of Service',
     version: '2024.1',
     effectiveDate: '1 January 2024',
     summary:
-      'Enterprise licensing terms for Adobe Acrobat Sign and Creative Cloud products ordered via distributor.',
+      'Governs Google Cloud consumption billing, acceptable use, and platform service terms.',
     highlights: [
-      'Named-user or device licensing per SKU',
-      'Renewal aligned to anniversary date',
-      'Adobe DPA applies to document workflows',
+      'Consumption billed monthly in arrears',
+      'Billing account linked via Synnex reseller channel',
+      'Shared responsibility for cloud security applies',
     ],
     acceptanceLabel:
-      'I confirm {customer} accepts Adobe Enterprise Subscription Terms for the selected products.',
+      'I confirm {customer} accepts Google Cloud Platform Terms of Service for linked billing accounts.',
     documentBody: [
       {
-        heading: '1. Licence model',
+        heading: '1. Platform services',
         paragraphs: [
-          'Adobe subscriptions are granted on a named-user basis unless a device-based SKU is specified. Users must be uniquely identified and may not share credentials.',
+          'Customer orders Google Cloud Platform services including Compute Engine, Cloud Storage, and related platform SKUs. Services are subject to the Google Cloud Platform Terms of Service and Service Specific Terms.',
         ],
       },
       {
-        heading: '2. VIP / distributor fulfilment',
+        heading: '2. Billing account',
         paragraphs: [
-          'Orders are fulfilled through Adobe\'s Value Incentive Plan channel via Synnex. Anniversary dates and true-ups follow Adobe commercial calendar rules.',
+          'A Google Cloud billing account is created or linked under the reseller channel. Consumption charges are aggregated and invoiced through Synnex to the Partner and Customer.',
         ],
       },
       {
-        heading: '3. Document services',
+        heading: '3. Acceptable use & security',
         paragraphs: [
-          'For Acrobat Sign and PDF services, Customer data is processed under the Adobe Data Processing Agreement. Customer is data controller for documents uploaded by end users.',
+          'Customer must comply with Google Cloud Acceptable Use Policy. Customer is responsible for IAM configuration, data classification, and workload security within their projects.',
         ],
       },
     ],
   },
   {
-    id: 'crowdstrike-msa',
-    vendor: 'crowdstrike',
-    title: 'CrowdStrike Master Subscription Agreement',
-    version: '2023.4',
-    effectiveDate: '1 October 2023',
+    id: 'acronis-msa',
+    vendor: 'acronis',
+    title: 'Acronis Cyber Protect Cloud Service Agreement',
+    version: '2024.1',
+    effectiveDate: '1 January 2024',
     summary:
-      'Endpoint protection subscription terms, deployment requirements, and data collection for threat detection.',
+      'Backup, disaster recovery, and cyber protection subscription terms for Acronis Cyber Protect Cloud.',
     highlights: [
-      'Agent deployment required within 30 days',
-      'Minimum term applies to annual billing',
-      'Telemetry processed per CrowdStrike privacy policy',
+      'Agent deployment required on protected workloads',
+      'Microsoft 365 backup requires tenant authorisation',
+      'Telemetry processed per Acronis privacy policy',
     ],
     acceptanceLabel:
-      'I confirm {customer} accepts the CrowdStrike Falcon subscription terms and deployment requirements.',
+      'I confirm {customer} accepts the Acronis Cyber Protect Cloud service terms and deployment requirements.',
     documentBody: [
       {
         heading: '1. Subscription',
         paragraphs: [
-          'CrowdStrike Falcon platform modules are licensed per endpoint or per sensor as specified. Customer must deploy the Falcon agent to entitled endpoints within thirty (30) days of activation.',
+          'Acronis Cyber Protect Cloud modules are licensed per workload as specified in the order. Customer must deploy the Acronis agent to entitled endpoints and servers within thirty (30) days of activation.',
         ],
       },
       {
-        heading: '2. Telemetry & privacy',
+        heading: '2. Microsoft 365 protection',
         paragraphs: [
-          'The Falcon agent collects endpoint telemetry necessary for threat detection and response. Data is processed according to CrowdStrike\'s privacy policy and Customer\'s data processing settings.',
+          'Where Microsoft 365 backup is ordered, Customer grants Acronis appropriate API access to mailboxes, OneDrive, and SharePoint as defined in the setup wizard. Customer retains data ownership.',
         ],
       },
       {
-        heading: '3. Support & updates',
+        heading: '3. Security & updates',
         paragraphs: [
-          'CrowdStrike provides continuous cloud-delivered updates. Customer is responsible for maintaining agent connectivity and compatible operating system versions.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'salesforce-msa',
-    vendor: 'salesforce',
-    title: 'Salesforce Master Subscription Agreement',
-    version: '2024.1',
-    effectiveDate: '1 January 2024',
-    summary:
-      'CRM cloud service terms including user licensing, sandbox usage, and Trust & Compliance documentation.',
-    highlights: [
-      'Per-user licensing; true-up on overage',
-      'Org created under partner referral where applicable',
-      'Data hosted in Salesforce AU pod when selected',
-    ],
-    acceptanceLabel:
-      'I confirm {customer} accepts the Salesforce Master Subscription Agreement for this org.',
-    documentBody: [
-      {
-        heading: '1. Subscription services',
-        paragraphs: [
-          'Salesforce grants Customer a non-exclusive right to use ordered cloud services for internal business purposes. User licences are counted by named users with access to production orgs.',
-        ],
-      },
-      {
-        heading: '2. Org provisioning',
-        paragraphs: [
-          'Partner may create or link a Salesforce org under Customer\'s identity. Customer admin accepts org ownership and security configuration responsibilities upon first login.',
-        ],
-      },
-      {
-        heading: '3. Data & hosting',
-        paragraphs: [
-          'Production data for AU customers is hosted in Salesforce\'s Australian infrastructure (Hyperforce AU) when selected at provisioning. Backup and disaster recovery follow Salesforce Trust documentation.',
+          'Acronis delivers continuous cloud updates for protection modules. Customer is responsible for maintaining agent connectivity and compatible operating system versions on protected workloads.',
         ],
       },
     ],

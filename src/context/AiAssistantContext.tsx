@@ -30,7 +30,7 @@ const WELCOME: AiMessage = {
 
 const QUICK_PROMPTS: Record<string, string> = {
   'prompt-health': 'What needs attention in my portfolio?',
-  'prompt-coastal': 'Provision Coastal Health with Microsoft 365 and AWS',
+  'prompt-coastal': 'Provision Coastal Health with Microsoft 365 and Azure',
   'prompt-mca': 'Explain Microsoft MCA requirements',
 }
 

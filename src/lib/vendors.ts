@@ -10,60 +10,52 @@ export interface VendorConfig {
   description: string
 }
 
+/** Vendor lines available on the Synnex cloud marketplace (demo catalogue). */
 export const vendors: Record<CloudVendor, VendorConfig> = {
-  microsoft: {
-    id: 'microsoft',
-    name: 'Microsoft',
-    shortName: 'MS',
+  'microsoft-csp': {
+    id: 'microsoft-csp',
+    name: 'Microsoft CSP',
+    shortName: 'CSP',
     color: 'text-blue-700',
     bgColor: 'bg-blue-100',
     borderColor: 'border-blue-200',
-    description: 'M365, Azure, Dynamics, Power Platform',
+    description: 'Microsoft 365, Defender, and Dynamics via Cloud Solution Provider',
   },
-  aws: {
-    id: 'aws',
-    name: 'Amazon Web Services',
-    shortName: 'AWS',
-    color: 'text-orange-700',
-    bgColor: 'bg-orange-100',
-    borderColor: 'border-orange-200',
-    description: 'Compute, storage, and cloud infrastructure',
+  'microsoft-azure': {
+    id: 'microsoft-azure',
+    name: 'Microsoft Azure',
+    shortName: 'Az',
+    color: 'text-sky-700',
+    bgColor: 'bg-sky-100',
+    borderColor: 'border-sky-200',
+    description: 'Azure consumption, reservations, and infrastructure services',
   },
-  google: {
-    id: 'google',
+  'google-workspace': {
+    id: 'google-workspace',
+    name: 'Google Workspace',
+    shortName: 'GWS',
+    color: 'text-green-700',
+    bgColor: 'bg-green-50',
+    borderColor: 'border-green-200',
+    description: 'Gmail, Drive, Meet, and collaboration for organisations',
+  },
+  'google-cloud': {
+    id: 'google-cloud',
     name: 'Google Cloud',
     shortName: 'GCP',
     color: 'text-red-700',
     bgColor: 'bg-red-50',
     borderColor: 'border-red-200',
-    description: 'Workspace, GCP, and collaboration tools',
+    description: 'Compute, storage, and platform services on Google Cloud',
   },
-  adobe: {
-    id: 'adobe',
-    name: 'Adobe',
-    shortName: 'Ad',
-    color: 'text-rose-700',
-    bgColor: 'bg-rose-100',
-    borderColor: 'border-rose-200',
-    description: 'Creative Cloud and document services',
-  },
-  crowdstrike: {
-    id: 'crowdstrike',
-    name: 'CrowdStrike',
-    shortName: 'CS',
-    color: 'text-slate-800',
-    bgColor: 'bg-slate-200',
-    borderColor: 'border-slate-300',
-    description: 'Endpoint detection and response',
-  },
-  salesforce: {
-    id: 'salesforce',
-    name: 'Salesforce',
-    shortName: 'SF',
-    color: 'text-sky-700',
-    bgColor: 'bg-sky-100',
-    borderColor: 'border-sky-200',
-    description: 'CRM and customer experience cloud',
+  acronis: {
+    id: 'acronis',
+    name: 'Acronis',
+    shortName: 'Ac',
+    color: 'text-emerald-800',
+    bgColor: 'bg-emerald-100',
+    borderColor: 'border-emerald-200',
+    description: 'Cyber Protect Cloud backup, disaster recovery, and security',
   },
 }
 

@@ -79,7 +79,7 @@ export function getPortfolioInsights(): AiInsight[] {
     id: 'portfolio-mrr',
     severity: 'info',
     title: `Portfolio MRR ${formatCurrency(portfolioMrr)}`,
-    description: `${listCustomers().filter((c) => c.status === 'active').length} active customers across Microsoft, AWS, Google, Adobe, and CrowdStrike.`,
+    description: `${listCustomers().filter((c) => c.status === 'active').length} active customers across Microsoft CSP, Azure, Google Workspace, Google Cloud, and Acronis.`,
     href: '/subscriptions',
     actionLabel: 'View subscriptions',
   })

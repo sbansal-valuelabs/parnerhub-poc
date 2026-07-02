@@ -92,7 +92,7 @@ export function AgreementAiPanel({ vendors, customerName, agreements }: Agreemen
                     : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                 )}
               >
-                Explain {a.vendor === 'microsoft' && a.id.includes('mca') ? 'MCA' : a.title.split(' ')[0]}
+                Explain {a.vendor === 'microsoft-csp' && a.id.includes('mca') ? 'MCA' : a.title.split(' ')[0]}
               </button>
             ))}
           </div>

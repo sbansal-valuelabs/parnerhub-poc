@@ -42,7 +42,7 @@ export function CustomersPage() {
         action={
           <Button onClick={() => setShowAddModal(true)}>
             <Plus className="h-4 w-4" />
-            Add Customer
+            Add or invite
           </Button>
         }
       />

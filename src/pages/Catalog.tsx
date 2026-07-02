@@ -18,12 +18,11 @@ const categories: { value: ProductCategory | 'all'; label: string }[] = [
   { value: 'infrastructure', label: 'Infrastructure' },
   { value: 'security', label: 'Security' },
   { value: 'business-apps', label: 'Business Apps' },
-  { value: 'creative', label: 'Creative' },
-  { value: 'crm', label: 'CRM' },
+  { value: 'backup', label: 'Backup & recovery' },
 ]
 
 const painPoints = [
-  { icon: LayoutGrid, label: 'One catalog', desc: 'All vendors in a single searchable marketplace' },
+  { icon: LayoutGrid, label: 'One catalog', desc: 'Plans & SKUs from every vendor in one search' },
   { icon: Zap, label: 'Fast provision', desc: 'Guided wizard — no switching between vendor portals' },
   { icon: TrendingUp, label: 'Margin visible', desc: 'See your margin before you provision' },
   { icon: Clock, label: 'Live ETA', desc: 'Estimated activation time on every SKU' },
@@ -60,7 +59,7 @@ export function CatalogPage() {
     <>
       <Header
         title="Cloud Marketplace"
-        subtitle={`${marketplaceStats.totalProducts} products · ${marketplaceStats.vendors} vendors · powered by Synnex`}
+        subtitle={`${marketplaceStats.totalProducts} service plans & SKUs · ${marketplaceStats.vendors} vendors · powered by Synnex`}
         action={
           <Link to="/provision">
             <Button>
@@ -145,7 +144,7 @@ export function CatalogPage() {
       </div>
 
       <p className="mb-4 text-sm text-slate-500">
-        Showing {filtered.length} product{filtered.length !== 1 ? 's' : ''}
+        Showing {filtered.length} plan{filtered.length !== 1 ? 's' : ''}
         {vendor !== 'all' && ` from ${vendorList.find((v) => v.id === vendor)?.name}`}
       </p>
 

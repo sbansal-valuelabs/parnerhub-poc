@@ -32,29 +32,36 @@ function matchProducts(query: string): string[] {
     if (!ids.includes(id)) ids.push(id)
   }
 
-  if (/m365|microsoft 365|office|productivity|business premium|business basic|e3/.test(q)) {
+  if (/m365|microsoft 365|office|productivity|business premium|business standard|e3/.test(q)) {
     if (/premium|bp/.test(q)) add('prod-m365-bp')
     else if (/e3|enterprise/.test(q)) add('prod-m365-e3')
     else add('prod-m365-bs')
   }
-  if (/azure/.test(q)) add('prod-azure-sub')
-  if (/aws|ec2|amazon/.test(q)) add('prod-aws-ec2')
-  if (/google|workspace|gws/.test(q)) add('prod-gws-plus')
-  if (/adobe|acrobat|sign/.test(q)) add('prod-adobe-acrobat')
-  if (/crowdstrike|falcon|security|endpoint|edr/.test(q)) add('prod-cs-falcon')
+  if (/azure/.test(q)) add('prod-azure-payg')
+  if (/workspace|gws|gmail/.test(q)) {
+    if (/plus/.test(q)) add('prod-gws-plus')
+    else if (/enterprise/.test(q)) add('prod-gws-enterprise')
+    else if (/standard/.test(q)) add('prod-gws-standard')
+    else add('prod-gws-plus')
+  }
+  if (/google cloud|gcp/.test(q)) add('prod-gcp-payg')
+  if (/acronis|backup|cyber protect/.test(q)) {
+    if (/complete|full/.test(q)) add('prod-acronis-complete')
+    else if (/security|av/.test(q)) add('prod-acronis-security')
+    else add('prod-acronis-backup')
+  }
   if (/defender/.test(q)) add('prod-defender')
-  if (/salesforce|crm/.test(q)) add('prod-sf-sales')
   if (/manufactur/.test(q) && ids.length === 0) {
     add('prod-m365-bp')
-    add('prod-cs-falcon')
+    add('prod-acronis-complete')
   }
   if (/legal|law/.test(q) && ids.length === 0) {
     add('prod-m365-e3')
-    add('prod-adobe-acrobat')
+    add('prod-acronis-security')
   }
   if (/health|onboard/.test(q) && ids.length === 0) {
     add('prod-m365-bs')
-    add('prod-aws-ec2')
+    add('prod-azure-payg')
   }
 
   return ids
@@ -78,7 +85,7 @@ export function suggestProvision(query: string): ProvisionSuggestion | null {
     productIds.length > 0
       ? productIds
       : customer.status === 'onboarding'
-        ? ['prod-m365-bs', 'prod-aws-ec2']
+        ? ['prod-m365-bs', 'prod-azure-payg']
         : ['prod-m365-bp']
 
   const products = listProducts().filter((p) => resolvedProducts.includes(p.id))

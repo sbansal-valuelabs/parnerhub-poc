@@ -42,9 +42,11 @@ import type { DataProvider } from './dataProvider.types'
 
 const DEMO_INTEGRATIONS: Integration[] = [
   { id: 'synnex', name: 'Synnex Marketplace API', vendor: 'synnex', status: 'connected', lastSyncedAt: '2025-06-24T08:00:00Z' },
-  { id: 'ms-partner', name: 'Microsoft Partner Center', vendor: 'microsoft', status: 'connected', lastSyncedAt: '2025-06-24T07:45:00Z' },
-  { id: 'aws-partner', name: 'AWS Partner Network', vendor: 'aws', status: 'connected', lastSyncedAt: '2025-06-24T07:30:00Z' },
-  { id: 'google-reseller', name: 'Google Cloud Reseller', vendor: 'google', status: 'connected', lastSyncedAt: '2025-06-24T07:15:00Z' },
+  { id: 'ms-partner', name: 'Microsoft Partner Center', vendor: 'microsoft-csp', status: 'connected', lastSyncedAt: '2025-06-24T07:45:00Z' },
+  { id: 'ms-azure', name: 'Microsoft Azure Enrollment', vendor: 'microsoft-azure', status: 'connected', lastSyncedAt: '2025-06-24T07:40:00Z' },
+  { id: 'google-workspace', name: 'Google Workspace Reseller', vendor: 'google-workspace', status: 'connected', lastSyncedAt: '2025-06-24T07:30:00Z' },
+  { id: 'google-cloud', name: 'Google Cloud Reseller', vendor: 'google-cloud', status: 'connected', lastSyncedAt: '2025-06-24T07:20:00Z' },
+  { id: 'acronis', name: 'Acronis Cyber Cloud', vendor: 'acronis', status: 'connected', lastSyncedAt: '2025-06-24T07:10:00Z' },
   { id: 'connectwise', name: 'ConnectWise PSA', vendor: 'psa', status: 'connected', lastSyncedAt: '2025-06-23T22:00:00Z' },
 ]
 

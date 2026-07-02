@@ -44,14 +44,26 @@ export function explainAgreementTopic(query: string): string | null {
   const q = query.toLowerCase()
   if (!/agreement|mca|terms|accept|legal|compliance/.test(q)) return null
 
-  if (/microsoft|mca|m365/.test(q)) {
+  if (/microsoft|mca|m365|csp/.test(q)) {
     return 'The **Microsoft Customer Agreement (MCA)** confirms the end customer accepts Microsoft product terms and billing via your CSP partnership. You also need **CSP Partner Authorisation** so Synnex can place orders on the tenant. Both are recorded at provisioning time.'
   }
-  if (/aws|amazon/.test(q)) {
-    return 'The **AWS Customer Agreement** covers consumption billing, acceptable use, and the shared responsibility model. Linked accounts are billed via your distributor credit line.'
+  if (/azure/.test(q)) {
+    return 'The **Microsoft Azure Subscription Agreement** covers consumption billing, acceptable use, and the shared responsibility model. Azure enrollments are billed via your Synnex distributor credit line.'
   }
-  if (/google|workspace/.test(q)) {
+  if (/workspace|gmail|gws/.test(q)) {
     return '**Google Workspace terms** include domain verification before activation and data processing for AU tenants. Super-admin may be delegated to you for provisioning.'
   }
-  return summarizeAgreementsForVendors(['microsoft', 'aws', 'google', 'adobe', 'crowdstrike', 'salesforce'])
+  if (/google cloud|gcp/.test(q)) {
+    return '**Google Cloud Platform terms** govern consumption billing and project security. Billing accounts are linked through the Synnex reseller channel.'
+  }
+  if (/acronis|backup|cyber protect/.test(q)) {
+    return 'The **Acronis Cyber Protect Cloud Service Agreement** covers backup, disaster recovery, and security modules. Agent deployment and Microsoft 365 tenant authorisation may be required.'
+  }
+  return summarizeAgreementsForVendors([
+    'microsoft-csp',
+    'microsoft-azure',
+    'google-workspace',
+    'google-cloud',
+    'acronis',
+  ])
 }

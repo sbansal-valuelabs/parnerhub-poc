@@ -7,7 +7,7 @@ import type { AgentResponse } from './types'
 const HELP_TEXT = `I can help with:
 
 • **Portfolio insights** — "What needs attention?" or "Customer health"
-• **Provisioning** — "Provision Coastal Health with M365 and AWS"
+• **Provisioning** — "Provision Coastal Health with M365 and Azure"
 • **Agreements** — "Explain Microsoft MCA" or "What agreements are required?"
 
 I use your live portfolio data (demo mode). Orders and agreements still need your confirmation.`
@@ -26,7 +26,7 @@ export async function runAgent(userMessage: string): Promise<AgentResponse> {
   }
 
   const agreementAnswer = explainAgreementTopic(q)
-  if (agreementAnswer && /agreement|mca|terms|accept|legal|compliance|microsoft|aws|google/.test(q)) {
+  if (agreementAnswer && /agreement|mca|terms|accept|legal|compliance|microsoft|azure|google|acronis/.test(q)) {
     return { content: agreementAnswer }
   }
 
@@ -79,7 +79,7 @@ export async function runAgent(userMessage: string): Promise<AgentResponse> {
     }
     return {
       content:
-        "I couldn't match a customer from your message. Try naming **Acme**, **Bright Legal**, or **Coastal Health**, plus the products (e.g. M365, AWS, CrowdStrike).",
+        "I couldn't match a customer from your message. Try naming **Acme**, **Bright Legal**, or **Coastal Health**, plus the products (e.g. M365, Azure, Acronis).",
     }
   }
 

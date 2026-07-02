@@ -69,7 +69,7 @@ export function CustomerDetailPage() {
             <a href={`/portal/login?customer=${customer.id}`} target="_blank" rel="noopener noreferrer">
               <Button variant="outline">
                 <ExternalLink className="h-4 w-4" />
-                Preview client portal
+                Preview customer portal
               </Button>
             </a>
             <Link to={`/provision?customer=${customer.id}`}>

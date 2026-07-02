@@ -9,43 +9,42 @@ import type { LicensePool, TenantUser } from '../types'
 
 export const tenantUsers: TenantUser[] = [
   // Acme — sample of 118 M365-assigned users
-  { id: 'u-001', customerId: 'cust-001', name: 'Sarah Chen', email: 's.chen@acmemfg.com.au', department: 'Executive', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T08:30:00' },
-  { id: 'u-002', customerId: 'cust-001', name: 'Mike Torres', email: 'm.torres@acmemfg.com.au', department: 'Operations', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-23T17:45:00' },
-  { id: 'u-003', customerId: 'cust-001', name: 'Emma Wilson', email: 'e.wilson@acmemfg.com.au', department: 'Finance', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T07:12:00' },
-  { id: 'u-004', customerId: 'cust-001', name: 'David Park', email: 'd.park@acmemfg.com.au', department: 'IT', licenses: ['Microsoft 365 Business Premium', 'CrowdStrike Falcon Pro'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T09:00:00' },
-  { id: 'u-005', customerId: 'cust-001', name: 'Lisa Nguyen', email: 'l.nguyen@acmemfg.com.au', department: 'HR', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft', status: 'inactive', lastSignIn: '2025-05-10T14:20:00' },
-  { id: 'u-006', customerId: 'cust-001', name: 'Raj Patel', email: 'r.patel@acmemfg.com.au', department: 'DevOps', licenses: ['AWS EC2 & Core Services'], vendor: 'aws', status: 'active', lastSignIn: '2025-06-24T06:00:00' },
+  { id: 'u-001', customerId: 'cust-001', name: 'Sarah Chen', email: 's.chen@acmemfg.com.au', department: 'Executive', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-24T08:30:00' },
+  { id: 'u-002', customerId: 'cust-001', name: 'Mike Torres', email: 'm.torres@acmemfg.com.au', department: 'Operations', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-23T17:45:00' },
+  { id: 'u-003', customerId: 'cust-001', name: 'Emma Wilson', email: 'e.wilson@acmemfg.com.au', department: 'Finance', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-24T07:12:00' },
+  { id: 'u-004', customerId: 'cust-001', name: 'David Park', email: 'd.park@acmemfg.com.au', department: 'IT', licenses: ['Microsoft 365 Business Premium', 'Acronis Cyber Protect Cloud — Complete'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-24T09:00:00' },
+  { id: 'u-005', customerId: 'cust-001', name: 'Lisa Nguyen', email: 'l.nguyen@acmemfg.com.au', department: 'HR', licenses: ['Microsoft 365 Business Premium'], vendor: 'microsoft-csp', status: 'inactive', lastSignIn: '2025-05-10T14:20:00' },
+  { id: 'u-006', customerId: 'cust-001', name: 'Raj Patel', email: 'r.patel@acmemfg.com.au', department: 'DevOps', licenses: ['Azure Pay-As-You-Go Subscription'], vendor: 'microsoft-azure', status: 'active', lastSignIn: '2025-06-24T06:00:00' },
   // Bright Legal — sample of 63 M365-assigned users
-  { id: 'u-010', customerId: 'cust-002', name: 'James Morrison', email: 'j.morrison@brightlegal.com.au', department: 'Partners', licenses: ['Microsoft 365 E3'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T09:15:00' },
-  { id: 'u-011', customerId: 'cust-002', name: 'Kate Sullivan', email: 'k.sullivan@brightlegal.com.au', department: 'Legal', licenses: ['Microsoft 365 E3', 'Adobe Acrobat Sign Solutions'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-23T16:30:00' },
-  { id: 'u-012', customerId: 'cust-002', name: 'Ryan O\'Brien', email: 'r.obrien@brightlegal.com.au', department: 'Legal', licenses: ['Microsoft 365 E3'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-22T11:00:00' },
-  { id: 'u-013', customerId: 'cust-002', name: 'Nina Gupta', email: 'n.gupta@brightlegal.com.au', department: 'Marketing', licenses: ['Google Workspace Business Plus'], vendor: 'google', status: 'active', lastSignIn: '2025-06-22T14:00:00' },
-  { id: 'u-014', customerId: 'cust-002', name: 'Olivia Hart', email: 'o.hart@brightlegal.com.au', department: 'Legal', licenses: ['Adobe Acrobat Sign Solutions'], vendor: 'adobe', status: 'active', lastSignIn: '2025-06-21T09:30:00' },
+  { id: 'u-010', customerId: 'cust-002', name: 'James Morrison', email: 'j.morrison@brightlegal.com.au', department: 'Partners', licenses: ['Microsoft 365 E3'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-24T09:15:00' },
+  { id: 'u-011', customerId: 'cust-002', name: 'Kate Sullivan', email: 'k.sullivan@brightlegal.com.au', department: 'Legal', licenses: ['Microsoft 365 E3', 'Acronis Cyber Protect Cloud — Advanced Security'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-23T16:30:00' },
+  { id: 'u-012', customerId: 'cust-002', name: 'Ryan O\'Brien', email: 'r.obrien@brightlegal.com.au', department: 'Legal', licenses: ['Microsoft 365 E3'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-22T11:00:00' },
+  { id: 'u-013', customerId: 'cust-002', name: 'Nina Gupta', email: 'n.gupta@brightlegal.com.au', department: 'Marketing', licenses: ['Google Workspace Business Plus'], vendor: 'google-workspace', status: 'active', lastSignIn: '2025-06-22T14:00:00' },
+  { id: 'u-014', customerId: 'cust-002', name: 'Olivia Hart', email: 'o.hart@brightlegal.com.au', department: 'Legal', licenses: ['Acronis Cyber Protect Cloud — Advanced Security'], vendor: 'acronis', status: 'active', lastSignIn: '2025-06-21T09:30:00' },
   // Metro Finance — sample users
-  { id: 'u-h001', customerId: 'cust-h001', name: 'Tom Bradley', email: 't.bradley@metrofinance.com.au', department: 'IT', licenses: ['Microsoft 365 Business Standard', 'Microsoft Defender for Endpoint P2'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T08:00:00' },
-  { id: 'u-h002', customerId: 'cust-h001', name: 'Nina Kowalski', email: 'n.kowalski@metrofinance.com.au', department: 'Sales', licenses: ['Salesforce Sales Cloud Professional'], vendor: 'salesforce', status: 'active', lastSignIn: '2025-06-23T15:30:00' },
-  { id: 'u-h003', customerId: 'cust-h001', name: 'Grant Ellis', email: 'g.ellis@metrofinance.com.au', department: 'Finance', licenses: ['Microsoft 365 Business Standard'], vendor: 'microsoft', status: 'active', lastSignIn: '2025-06-24T07:45:00' },
+  { id: 'u-h001', customerId: 'cust-h001', name: 'Tom Bradley', email: 't.bradley@metrofinance.com.au', department: 'IT', licenses: ['Microsoft 365 Business Standard', 'Microsoft Defender for Endpoint P2'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-24T08:00:00' },
+  { id: 'u-h002', customerId: 'cust-h001', name: 'Nina Kowalski', email: 'n.kowalski@metrofinance.com.au', department: 'Sales', licenses: ['Google Cloud Platform Pay-As-You-Go'], vendor: 'google-cloud', status: 'active', lastSignIn: '2025-06-23T15:30:00' },
+  { id: 'u-h003', customerId: 'cust-h001', name: 'Grant Ellis', email: 'g.ellis@metrofinance.com.au', department: 'Finance', licenses: ['Microsoft 365 Business Standard'], vendor: 'microsoft-csp', status: 'active', lastSignIn: '2025-06-24T07:45:00' },
 ]
 
 export const licensePools: LicensePool[] = [
   // Acme — pools match subscription seats
-  { customerId: 'cust-001', productName: 'Microsoft 365 Business Premium', sku: 'O365_BUSINESS_PREMIUM', vendor: 'microsoft', total: 120, assigned: 118, available: 2 },
-  { customerId: 'cust-001', productName: 'CrowdStrike Falcon Pro', sku: 'CS_FALCON_PRO', vendor: 'crowdstrike', total: 120, assigned: 115, available: 5 },
-  { customerId: 'cust-001', productName: 'Azure Subscription', sku: 'AZURE_PAYG', vendor: 'microsoft', total: 0, assigned: 0, available: 0 },
-  { customerId: 'cust-001', productName: 'AWS EC2 & Core Services', sku: 'AWS_CORE_PAYG', vendor: 'aws', total: 0, assigned: 0, available: 0 },
+  { customerId: 'cust-001', productName: 'Microsoft 365 Business Premium', sku: 'CFQ7TTC0LH18', vendor: 'microsoft-csp', total: 120, assigned: 118, available: 2 },
+  { customerId: 'cust-001', productName: 'Acronis Cyber Protect Cloud — Complete', sku: 'ACR_CP_COMPLETE', vendor: 'acronis', total: 120, assigned: 115, available: 5 },
+  { customerId: 'cust-001', productName: 'Azure Pay-As-You-Go Subscription', sku: 'AZURE_PAYG', vendor: 'microsoft-azure', total: 0, assigned: 0, available: 0 },
   // Bright Legal
-  { customerId: 'cust-002', productName: 'Microsoft 365 E3', sku: 'O365_E3', vendor: 'microsoft', total: 65, assigned: 63, available: 2 },
-  { customerId: 'cust-002', productName: 'Adobe Acrobat Sign Solutions', sku: 'ADOBE_ACROBAT_SIGN', vendor: 'adobe', total: 40, assigned: 38, available: 2 },
-  { customerId: 'cust-002', productName: 'Google Workspace Business Plus', sku: 'GWS_BUSINESS_PLUS', vendor: 'google', total: 10, assigned: 10, available: 0 },
+  { customerId: 'cust-002', productName: 'Microsoft 365 E3', sku: 'CFQ7TTC0LCHC', vendor: 'microsoft-csp', total: 65, assigned: 63, available: 2 },
+  { customerId: 'cust-002', productName: 'Acronis Cyber Protect Cloud — Advanced Security', sku: 'ACR_CP_SECURITY', vendor: 'acronis', total: 40, assigned: 38, available: 2 },
+  { customerId: 'cust-002', productName: 'Google Workspace Business Plus', sku: '1010020020', vendor: 'google-workspace', total: 10, assigned: 10, available: 0 },
   // Metro Finance
-  { customerId: 'cust-h001', productName: 'Microsoft 365 Business Standard', sku: 'O365_BUSINESS_STANDARD', vendor: 'microsoft', total: 55, assigned: 52, available: 3 },
-  { customerId: 'cust-h001', productName: 'Microsoft Defender for Endpoint P2', sku: 'DEFENDER_ENDPOINT_P2', vendor: 'microsoft', total: 55, assigned: 50, available: 5 },
-  { customerId: 'cust-h001', productName: 'Salesforce Sales Cloud Professional', sku: 'SF_SALES_PRO', vendor: 'salesforce', total: 18, assigned: 16, available: 2 },
-  { customerId: 'cust-h001', productName: 'Azure Subscription', sku: 'AZURE_PAYG', vendor: 'microsoft', total: 0, assigned: 0, available: 0 },
+  { customerId: 'cust-h001', productName: 'Microsoft 365 Business Standard', sku: 'CFQ7TTC0LDPB', vendor: 'microsoft-csp', total: 55, assigned: 52, available: 3 },
+  { customerId: 'cust-h001', productName: 'Microsoft Defender for Endpoint P2', sku: 'DEFENDER_ENDPOINT_P2', vendor: 'microsoft-csp', total: 55, assigned: 50, available: 5 },
+  { customerId: 'cust-h001', productName: 'Google Cloud Platform Pay-As-You-Go', sku: 'GCP_PAYG', vendor: 'google-cloud', total: 0, assigned: 0, available: 0 },
+  { customerId: 'cust-h001', productName: 'Azure Pay-As-You-Go Subscription', sku: 'AZURE_PAYG', vendor: 'microsoft-azure', total: 0, assigned: 0, available: 0 },
   // Summit Retail
-  { customerId: 'cust-h002', productName: 'Google Workspace Business Plus', sku: 'GWS_BUSINESS_PLUS', vendor: 'google', total: 35, assigned: 32, available: 3 },
-  { customerId: 'cust-h002', productName: 'Microsoft 365 Business Standard', sku: 'O365_BUSINESS_STANDARD', vendor: 'microsoft', total: 25, assigned: 22, available: 3 },
-  { customerId: 'cust-h002', productName: 'AWS Business Support', sku: 'AWS_BUSINESS_SUPPORT', vendor: 'aws', total: 0, assigned: 0, available: 0 },
+  { customerId: 'cust-h002', productName: 'Google Workspace Business Plus', sku: '1010020020', vendor: 'google-workspace', total: 35, assigned: 32, available: 3 },
+  { customerId: 'cust-h002', productName: 'Microsoft 365 Business Standard', sku: 'CFQ7TTC0LDPB', vendor: 'microsoft-csp', total: 25, assigned: 22, available: 3 },
+  { customerId: 'cust-h002', productName: 'Google Cloud Platform Pay-As-You-Go', sku: 'GCP_PAYG', vendor: 'google-cloud', total: 0, assigned: 0, available: 0 },
 ]
 
 export const portalAccounts = [
@@ -56,7 +55,7 @@ export const portalAccounts = [
 
 /** Consumption SKUs have no seat pool — spend is on subscription MRR */
 export function isConsumptionSku(sku: string): boolean {
-  return sku.includes('PAYG') || sku.includes('CORE_PAYG')
+  return sku.includes('PAYG')
 }
 
 export function getUsersForCustomer(customerId: string): TenantUser[] {

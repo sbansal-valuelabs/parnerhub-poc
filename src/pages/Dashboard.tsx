@@ -195,7 +195,7 @@ export function DashboardPage() {
           <Card className="bg-gradient-to-br from-brand-600 to-brand-800 !p-6 text-white border-0">
             <h2 className="text-lg font-semibold">Quick provision</h2>
             <p className="mt-2 text-sm text-brand-100">
-              Deploy from {marketplaceStats.vendors} vendors — Microsoft, AWS, Google, Adobe, and more — in under 10 minutes.
+              Deploy from {marketplaceStats.vendors} Synnex vendor lines — Microsoft CSP, Azure, Google Workspace, Google Cloud, and Acronis — in under 10 minutes.
             </p>
             <Link to="/catalog" className="mt-2 block text-sm font-medium text-brand-200 hover:text-white">
               Browse marketplace →

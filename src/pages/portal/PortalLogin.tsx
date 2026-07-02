@@ -75,7 +75,7 @@ export function PortalLoginPage() {
             {selectedCustomer ? resellerProfile.name : 'your IT partner'}.
           </p>
           <ul className="mt-8 space-y-3 text-sm text-emerald-100">
-            <li>• View all cloud products in one place — Microsoft, AWS, Google & more</li>
+            <li>• View all cloud products in one place — Microsoft, Google Workspace, Google Cloud, and Acronis</li>
             <li>• See license usage across every vendor</li>
             <li>• Request new services from your IT partner in one click</li>
           </ul>

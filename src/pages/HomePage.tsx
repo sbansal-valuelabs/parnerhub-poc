@@ -7,13 +7,17 @@ import {
   Layers,
   Shield,
   Zap,
+  GitBranch,
 } from 'lucide-react'
-import { getMarketplaceStats, getPortfolioSummary, getResellerProfile } from '../services/repository'
+import { getMarketplaceStats, listDemoResellers } from '../services/repository'
 
+/**
+ * Public home — capability stats only (no portfolio MRR).
+ * Reseller-specific metrics belong on the dashboard after login.
+ */
 export function HomePage() {
-  const resellerProfile = getResellerProfile()
   const marketplaceStats = getMarketplaceStats()
-  const portfolioSummary = getPortfolioSummary()
+  const demoResellerCount = listDemoResellers().length
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -26,7 +30,7 @@ export function HomePage() {
             <span className="text-base font-semibold">PartnerHub</span>
           </div>
           <p className="hidden text-xs text-slate-400 sm:block">
-            Cloud marketplace powered by {resellerProfile.distributor}
+            Multi-vendor cloud marketplace demo
           </p>
         </div>
       </header>
@@ -41,8 +45,8 @@ export function HomePage() {
             One place to provision, manage, and serve cloud services
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-sm text-slate-400">
-            Resellers manage customers across Microsoft, AWS, Google, and more.
-            End customers get a simple portal for licenses and products.
+            Resellers manage customers across Microsoft CSP, Azure, Google Workspace, Google Cloud, and Acronis.
+            End customers get a simple portal for licenses and subscriptions.
           </p>
         </div>
       </section>
@@ -58,20 +62,20 @@ export function HomePage() {
             </div>
             <h2 className="text-lg font-semibold">Reseller portal</h2>
             <p className="mt-1.5 text-sm text-slate-400">
-              For MSP and partner staff — provision services, manage customers, and run your cloud business.
+              For MSP and partner staff — provision plans, manage customers, and run your cloud business.
             </p>
             <ul className="mt-4 space-y-1.5 text-xs text-slate-300">
               <li className="flex items-center gap-2">
                 <Layers className="h-3.5 w-3.5 text-brand-400" />
-                {marketplaceStats.vendors} vendors · {marketplaceStats.totalProducts} products
+                {marketplaceStats.vendors} vendors · {marketplaceStats.totalProducts} service plans
               </li>
               <li className="flex items-center gap-2">
                 <Zap className="h-3.5 w-3.5 text-brand-400" />
-                Unified provisioning wizard
+                Guided provision wizard with vendor agreements
               </li>
               <li className="flex items-center gap-2">
                 <Shield className="h-3.5 w-3.5 text-brand-400" />
-                Team roles & permissions
+                Team roles &amp; permissions
               </li>
             </ul>
             <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-400 group-hover:text-brand-300">
@@ -89,7 +93,7 @@ export function HomePage() {
             </div>
             <h2 className="text-lg font-semibold">Customer portal</h2>
             <p className="mt-1.5 text-sm text-slate-400">
-              For end-customer organisations — view products, licenses, and users across all your cloud vendors.
+              For end-customer organisations — view subscriptions, licenses, and users across vendors.
             </p>
             <ul className="mt-4 space-y-1.5 text-xs text-slate-300">
               <li className="flex items-center gap-2">
@@ -98,7 +102,7 @@ export function HomePage() {
               </li>
               <li className="flex items-center gap-2">
                 <Shield className="h-3.5 w-3.5 text-emerald-400" />
-                License usage & availability
+                License usage &amp; availability
               </li>
               <li className="flex items-center gap-2">
                 <Zap className="h-3.5 w-3.5 text-emerald-400" />
@@ -112,22 +116,31 @@ export function HomePage() {
           </Link>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 rounded-lg border border-white/10 bg-white/5 p-4 sm:grid-cols-4">
-          {[
-            { label: 'Portfolio MRR', value: `$${(portfolioSummary.totalMrr / 1000).toFixed(1)}k` },
-            { label: 'Active customers', value: String(portfolioSummary.activeCustomers) },
-            { label: 'Cloud vendors', value: String(marketplaceStats.vendors) },
-            { label: 'Subscriptions', value: String(portfolioSummary.activeSubscriptions) },
-          ].map(({ label, value }) => (
-            <div key={label} className="text-center">
-              <p className="text-lg font-bold text-white">{value}</p>
-              <p className="mt-0.5 text-[10px] text-slate-400">{label}</p>
-            </div>
-          ))}
+        <div className="mt-8 rounded-lg border border-white/10 bg-white/5 p-4">
+          <p className="mb-3 text-center text-[10px] font-medium uppercase tracking-wider text-slate-500">
+            Platform capabilities (not reseller-specific metrics)
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {[
+              { label: 'Cloud vendors', value: String(marketplaceStats.vendors), icon: Layers },
+              { label: 'Service plans & SKUs', value: String(marketplaceStats.totalProducts), icon: GitBranch },
+              { label: 'Demo reseller orgs', value: String(demoResellerCount), icon: Building2 },
+              { label: 'Portal experiences', value: '2', icon: Users },
+            ].map(({ label, value, icon: Icon }) => (
+              <div key={label} className="text-center">
+                <Icon className="mx-auto mb-1 h-4 w-4 text-slate-500" />
+                <p className="text-lg font-bold text-white">{value}</p>
+                <p className="mt-0.5 text-[10px] leading-tight text-slate-400">{label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-center text-[10px] text-slate-500">
+            Portfolio MRR and customer counts appear on the reseller dashboard after sign-in.
+          </p>
         </div>
 
         <p className="mt-6 text-center text-[10px] text-slate-500">
-          Demo environment · 2 reseller orgs · No real authentication required
+          Demo environment · No real authentication required
         </p>
       </section>
     </div>

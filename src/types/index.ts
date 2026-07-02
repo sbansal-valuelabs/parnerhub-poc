@@ -1,14 +1,18 @@
 export type CustomerStatus = 'active' | 'onboarding' | 'suspended'
 export type SubscriptionStatus = 'active' | 'pending' | 'suspended' | 'cancelled'
 export type BillingCycle = 'monthly' | 'annual'
-export type CloudVendor = 'microsoft' | 'aws' | 'google' | 'adobe' | 'crowdstrike' | 'salesforce'
+export type CloudVendor =
+  | 'microsoft-csp'
+  | 'microsoft-azure'
+  | 'google-workspace'
+  | 'google-cloud'
+  | 'acronis'
 export type ProductCategory =
   | 'productivity'
   | 'infrastructure'
   | 'security'
   | 'business-apps'
-  | 'creative'
-  | 'crm'
+  | 'backup'
 
 export interface Customer {
   id: string
@@ -140,8 +144,7 @@ export const categoryLabels: Record<ProductCategory, string> = {
   infrastructure: 'Infrastructure',
   security: 'Security',
   'business-apps': 'Business Apps',
-  creative: 'Creative',
-  crm: 'CRM',
+  backup: 'Backup & recovery',
 }
 
 export const categoryColors: Record<ProductCategory, string> = {
@@ -149,8 +152,7 @@ export const categoryColors: Record<ProductCategory, string> = {
   infrastructure: 'bg-cyan-100 text-cyan-700',
   security: 'bg-purple-100 text-purple-700',
   'business-apps': 'bg-orange-100 text-orange-700',
-  creative: 'bg-rose-100 text-rose-700',
-  crm: 'bg-sky-100 text-sky-700',
+  backup: 'bg-emerald-100 text-emerald-700',
 }
 
 /** @deprecated use categoryLabels — kept for gradual migration */

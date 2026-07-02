@@ -29,7 +29,7 @@ export function answerPortalQuestion(query: string, customerId: string): string 
   }
 
   if (/product|service|subscription|what do we have/.test(q)) {
-    return 'Open **My Products** to see everything across Microsoft, AWS, Google, and other vendors in one list.'
+    return 'Open **My Products** to see everything across Microsoft, Google Workspace, Google Cloud, and Acronis in one list.'
   }
 
   return null

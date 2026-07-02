@@ -137,11 +137,6 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
               >
                 <Icon className="h-5 w-5 shrink-0" />
                 {label}
-                {to === '/provision' && (
-                  <span className="ml-auto rounded bg-brand-500 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
-                    New
-                  </span>
-                )}
               </NavLink>
             )
           })}
@@ -159,7 +154,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
             className="mb-1 flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-brand-300 transition-colors hover:bg-white/5 hover:text-white"
           >
             <ExternalLink className="h-4 w-4 shrink-0" />
-            Client portal
+            Customer portal
           </Link>
           {bottomNav.map(({ to, icon: Icon, label }) => {
             const isActive = isNavActive(location.pathname, to)

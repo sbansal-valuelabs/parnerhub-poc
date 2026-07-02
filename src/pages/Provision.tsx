@@ -20,19 +20,30 @@ import { listProducts } from '../services/repository'
 import { getDataProvider } from '../services'
 import { useCustomers } from '../context/CustomerContext'
 import { useToast } from '../context/ToastContext'
-import { categoryLabels, categoryColors, type BillingCycle, type CartItem } from '../types'
+import { categoryLabels, categoryColors, type BillingCycle, type CartItem, type ProductCategory } from '../types'
 import { formatCurrencyPrecise, cn } from '../lib/utils'
 import { getAgreementsForVendors } from '../data/vendorAgreements'
 import { VendorAgreementsStep } from '../components/provision/VendorAgreementsStep'
 import type { CloudVendor } from '../types'
+import { vendorList } from '../lib/vendors'
+import { FilterChip } from '../components/ui/FilterChip'
 
 const allSteps = [
   { key: 'customer', label: 'Customer', icon: Building2 },
-  { key: 'products', label: 'Products', icon: Package },
+  { key: 'products', label: 'Plans & SKUs', icon: Package },
   { key: 'configure', label: 'Configure', icon: Settings2 },
   { key: 'agreements', label: 'Agreements', icon: FileSignature },
   { key: 'review', label: 'Review', icon: ClipboardCheck },
 ] as const
+
+const planCategories: { value: ProductCategory | 'all'; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'productivity', label: 'Productivity' },
+  { value: 'infrastructure', label: 'Infrastructure' },
+  { value: 'security', label: 'Security' },
+  { value: 'business-apps', label: 'Business Apps' },
+  { value: 'backup', label: 'Backup & recovery' },
+]
 
 type StepKey = (typeof allSteps)[number]['key']
 
@@ -40,9 +51,9 @@ function initialStepIndex(
   preselectedCustomer: string | null,
   hasProducts: boolean
 ): number {
-  if (preselectedCustomer && hasProducts) return 2
-  if (preselectedCustomer || hasProducts) return 1
-  return 0
+  if (!preselectedCustomer) return 0
+  if (hasProducts) return 2
+  return 1
 }
 
 function buildInitialCart(
@@ -62,7 +73,7 @@ function buildInitialCart(
 export function ProvisionPage() {
   const products = listProducts()
   const [searchParams] = useSearchParams()
-  const { customers } = useCustomers()
+  const { customers, getCustomer } = useCustomers()
   const { toast } = useToast()
   const preselectedCustomer = searchParams.get('customer')
   const preselectedProduct = searchParams.get('product')
@@ -79,11 +90,15 @@ export function ProvisionPage() {
   const [cart, setCart] = useState<CartItem[]>(() => buildInitialCart(preselectedProductIds, products))
   const [customerSearch, setCustomerSearch] = useState('')
   const [productSearch, setProductSearch] = useState('')
+  const [planVendor, setPlanVendor] = useState<CloudVendor | 'all'>('all')
+  const [planCategory, setPlanCategory] = useState<ProductCategory | 'all'>('all')
   const [completed, setCompleted] = useState(false)
   const [acceptedAgreementIds, setAcceptedAgreementIds] = useState<Set<string>>(new Set())
   const [resellerAttestation, setResellerAttestation] = useState(false)
 
-  const selectedCustomer = customers.find((c) => c.id === selectedCustomerId)
+  const selectedCustomer =
+    customers.find((c) => c.id === selectedCustomerId) ??
+    (selectedCustomerId ? getCustomer(selectedCustomerId) : undefined)
 
   const cartVendors = useMemo(
     () => [...new Set(cart.map((item) => item.product.vendor))] as CloudVendor[],
@@ -126,11 +141,17 @@ export function ProvisionPage() {
         c.domain.toLowerCase().includes(customerSearch.toLowerCase()))
   )
 
-  const filteredProducts = products.filter(
-    (p) =>
-      p.name.toLowerCase().includes(productSearch.toLowerCase()) &&
-      !cart.some((item) => item.product.id === p.id)
-  )
+  const filteredPlans = products.filter((p) => {
+    const q = productSearch.toLowerCase()
+    const matchesSearch =
+      p.name.toLowerCase().includes(q) ||
+      p.sku.toLowerCase().includes(q) ||
+      p.vendor.includes(q)
+    const matchesVendor = planVendor === 'all' || p.vendor === planVendor
+    const matchesCategory = planCategory === 'all' || p.category === planCategory
+    const notInCart = !cart.some((item) => item.product.id === p.id)
+    return matchesSearch && matchesVendor && matchesCategory && notInCart
+  })
 
   const totalMonthly = useMemo(() => {
     return cart.reduce((sum, item) => {
@@ -166,18 +187,23 @@ export function ProvisionPage() {
     requiredAgreements.length > 0 &&
     requiredAgreements.every((a) => acceptedAgreementIds.has(a.id))
 
+  const hasSelectedCustomer = !!selectedCustomerId && !!selectedCustomer
+
   const canProceed = () => {
     switch (currentStepKey) {
       case 'customer':
-        return !!selectedCustomerId
+        return hasSelectedCustomer
       case 'products':
-        return cart.length > 0
+        return hasSelectedCustomer && cart.length > 0
       case 'configure':
-        return cart.every((item) => item.seats >= item.product.minSeats)
+        return (
+          hasSelectedCustomer &&
+          cart.every((item) => item.seats >= item.product.minSeats)
+        )
       case 'agreements':
-        return allAgreementsAccepted
+        return hasSelectedCustomer && allAgreementsAccepted
       case 'review':
-        return hasAgreementStep ? allAgreementsAccepted : resellerAttestation
+        return hasSelectedCustomer && (hasAgreementStep ? allAgreementsAccepted : resellerAttestation)
       default:
         return true
     }
@@ -329,42 +355,82 @@ export function ProvisionPage() {
             </Card>
           )}
 
-          {/* Step 2: Products */}
+          {/* Step 2: Plans & SKUs */}
           {currentStepKey === 'products' && (
             <Card>
-              <h2 className="mb-1 text-base font-semibold text-slate-900">Add products</h2>
-              <p className="mb-4 text-sm text-slate-500">Select services from the catalog to provision.</p>
+              <h2 className="mb-1 text-base font-semibold text-slate-900">Select plans &amp; SKUs</h2>
+              <p className="mb-4 text-sm text-slate-500">
+                Choose distributor offers to provision. Each row is a billable plan (SKU) — the unit
+                Microsoft Partner Center and Synnex use for ordering.
+              </p>
               <SearchInput
                 value={productSearch}
                 onChange={setProductSearch}
-                placeholder="Search products..."
-                className="mb-4"
+                placeholder="Search plan name or SKU..."
+                className="mb-3"
               />
-              <div className="space-y-2">
-                {filteredProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="flex items-center justify-between rounded-lg border border-surface-border p-3 hover:bg-slate-50"
+              <div className="mb-3 flex flex-wrap gap-2">
+                <FilterChip active={planVendor === 'all'} onClick={() => setPlanVendor('all')}>
+                  All vendors
+                </FilterChip>
+                {vendorList.map((v) => (
+                  <FilterChip
+                    key={v.id}
+                    active={planVendor === v.id}
+                    onClick={() => setPlanVendor(v.id)}
                   >
-                    <div className="flex items-center gap-3">
-                      <VendorBadge vendor={product.vendor} size="sm" showName={false} />
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${categoryColors[product.category]}`}>
-                        {categoryLabels[product.category]}
-                      </span>
-                      <div>
-                        <p className="text-sm font-medium text-slate-900">{product.name}</p>
-                        <p className="text-xs text-slate-500">
-                          {product.priceMonthly > 0
-                            ? `${formatCurrencyPrecise(product.priceMonthly)}/user/mo`
-                            : 'Consumption-based'}
-                        </p>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="outline" onClick={() => addToCart(product.id)}>
-                      Add
-                    </Button>
-                  </div>
+                    {v.shortName}
+                  </FilterChip>
                 ))}
+              </div>
+              <div className="mb-4 flex flex-wrap gap-2">
+                {planCategories.map((cat) => (
+                  <FilterChip
+                    key={cat.value}
+                    active={planCategory === cat.value}
+                    onClick={() => setPlanCategory(cat.value)}
+                  >
+                    {cat.label}
+                  </FilterChip>
+                ))}
+              </div>
+              <p className="mb-2 text-xs text-slate-500">
+                {filteredPlans.length} plan{filteredPlans.length !== 1 ? 's' : ''} available
+              </p>
+              <div className="max-h-96 space-y-2 overflow-y-auto scrollbar-thin">
+                {filteredPlans.length === 0 ? (
+                  <p className="py-8 text-center text-sm text-slate-500">
+                    No plans match your filters, or all matching plans are already in the order.
+                  </p>
+                ) : (
+                  filteredPlans.map((product) => (
+                    <div
+                      key={product.id}
+                      className="flex items-center justify-between rounded-lg border border-surface-border p-3 hover:bg-slate-50"
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <VendorBadge vendor={product.vendor} size="sm" showName={false} />
+                        <span
+                          className={`hidden shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium sm:inline ${categoryColors[product.category]}`}
+                        >
+                          {categoryLabels[product.category]}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-slate-900">{product.name}</p>
+                          <p className="truncate text-xs text-slate-500">
+                            SKU: {product.sku}
+                            {product.priceMonthly > 0
+                              ? ` · ${formatCurrencyPrecise(product.priceMonthly)}/seat/mo`
+                              : ' · Consumption-based'}
+                          </p>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="outline" className="shrink-0" onClick={() => addToCart(product.id)}>
+                        Add plan
+                      </Button>
+                    </div>
+                  ))
+                )}
               </div>
             </Card>
           )}
@@ -372,8 +438,8 @@ export function ProvisionPage() {
           {/* Step 3: Configure */}
           {currentStepKey === 'configure' && (
             <Card>
-              <h2 className="mb-1 text-base font-semibold text-slate-900">Configure subscriptions</h2>
-              <p className="mb-4 text-sm text-slate-500">Set seat counts and billing terms for each product.</p>
+              <h2 className="mb-1 text-base font-semibold text-slate-900">Configure plan quantities</h2>
+              <p className="mb-4 text-sm text-slate-500">Set seat counts and billing cycle for each selected plan.</p>
               <div className="space-y-4">
                 {cart.map((item) => (
                   <div key={item.product.id} className="rounded-lg border border-surface-border p-4">
@@ -427,13 +493,26 @@ export function ProvisionPage() {
           )}
 
           {/* Step 4: Vendor agreements */}
-          {currentStepKey === 'agreements' && selectedCustomer && (
+          {currentStepKey === 'agreements' && hasSelectedCustomer && (
             <VendorAgreementsStep
               agreements={requiredAgreements}
-              customerName={selectedCustomer.name}
+              customerName={selectedCustomer!.name}
               acceptedIds={acceptedAgreementIds}
               onToggle={toggleAgreement}
             />
+          )}
+
+          {currentStepKey === 'agreements' && !hasSelectedCustomer && (
+            <Card>
+              <h2 className="text-base font-semibold text-slate-900">Select a customer first</h2>
+              <p className="mt-2 text-sm text-slate-500">
+                Vendor agreements are tied to the end customer. Go back and choose who you are provisioning for.
+              </p>
+              <Button className="mt-4" variant="outline" onClick={() => setStepIndex(0)}>
+                <ChevronLeft className="h-4 w-4" />
+                Back to customer
+              </Button>
+            </Card>
           )}
 
           {/* Review */}
@@ -552,13 +631,13 @@ export function ProvisionPage() {
               <div className="mb-4 space-y-2">
                 {cart.map((item) => (
                   <div key={item.product.id} className="flex justify-between text-sm">
-                    <span className="text-slate-600 truncate pr-2">{item.product.name}</span>
+                    <span className="truncate pr-2 text-slate-600">{item.product.name}</span>
                     <span className="shrink-0 text-slate-900">×{item.seats}</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="mb-4 text-sm text-slate-400">No products added</p>
+              <p className="mb-4 text-sm text-slate-400">No plans added</p>
             )}
 
             {currentStepKey === 'agreements' && requiredAgreements.length > 0 && (
