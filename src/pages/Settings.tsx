@@ -94,6 +94,22 @@ export function HelpPage() {
             ))}
           </ul>
         </Card>
+        <div id="vendor-apis">
+        <Card>
+          <h2 className="mb-3 text-base font-semibold text-slate-900">Vendor API reference</h2>
+          <p className="mb-3 text-sm text-slate-600">
+            Vendor insights on the dashboard and customer pages are mapped to official partner APIs only.
+            See <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">docs/vendor-apis/</code> in the repository.
+          </p>
+          <ul className="space-y-2 text-sm text-slate-700">
+            <li>• Microsoft CSP — Partner Center + Graph (GDAP)</li>
+            <li>• Microsoft Azure — Cost Management + usage analytics</li>
+            <li>• Google Workspace — Cloud Channel entitlements + BigQuery billing</li>
+            <li>• Google Cloud — Channel billing account + BigQuery export</li>
+            <li>• Acronis — resource_statuses, Alert Manager, tenants</li>
+          </ul>
+        </Card>
+        </div>
         <Card>
           <h2 className="mb-3 text-base font-semibold text-slate-900">Demo notes</h2>
           <p className="text-sm text-slate-600">

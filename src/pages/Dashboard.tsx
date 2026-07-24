@@ -30,6 +30,7 @@ import { formatCurrency, formatRelativeTime } from '../lib/utils'
 import type { ActivityItem } from '../types'
 import { AiInsightBanner } from '../components/ai/AiInsightBanner'
 import { GettingStartedBanner } from '../components/dashboard/GettingStartedBanner'
+import { PortfolioVendorSignalsCard } from '../components/vendor-insights/PortfolioVendorSignalsCard'
 import { EmptyState, EmptyStateLink } from '../components/ui/EmptyState'
 
 const activityIcons: Record<ActivityItem['type'], typeof Package> = {
@@ -122,6 +123,8 @@ export function DashboardPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
+          <PortfolioVendorSignalsCard />
+
           <Card>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-base font-semibold text-slate-900">Customers needing attention</h2>

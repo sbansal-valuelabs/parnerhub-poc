@@ -9,6 +9,8 @@ import {
   Copy,
   CheckCircle2,
   ExternalLink,
+  BarChart3,
+  LayoutList,
 } from 'lucide-react'
 import { Breadcrumb } from '../components/layout/Sidebar'
 import { Card } from '../components/ui/Card'
@@ -17,8 +19,12 @@ import { StatusBadge } from '../components/ui/Badge'
 import { listSubscriptions } from '../services/repository'
 import { useCustomers } from '../context/CustomerContext'
 import { getCustomerStats } from '../data/customerStats'
-import { formatCurrency, formatDate } from '../lib/utils'
+import { formatCurrency, formatDate, cn } from '../lib/utils'
 import { useToast } from '../context/ToastContext'
+import { fetchCustomerVendorInsights } from '../services/vendorInsights'
+import { CustomerVendorInsightsSection } from '../components/vendor-insights/CustomerVendorInsightsSection'
+
+type DetailTab = 'overview' | 'insights'
 
 export function CustomerDetailPage() {
   const subscriptions = listSubscriptions()
@@ -26,8 +32,10 @@ export function CustomerDetailPage() {
   const { getCustomer } = useCustomers()
   const { toast } = useToast()
   const [copied, setCopied] = useState(false)
+  const [tab, setTab] = useState<DetailTab>('overview')
   const customer = id ? getCustomer(id) : undefined
   const customerSubs = subscriptions.filter((s) => s.customerId === id)
+  const vendorInsights = id ? fetchCustomerVendorInsights(id) : null
 
   if (!customer) {
     return (
@@ -82,13 +90,56 @@ export function CustomerDetailPage() {
         </div>
       </div>
 
-      {customer.status === 'onboarding' && (
-        <div className="mb-6 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
-          Tenant provisioning is in progress via Synnex. Products and licenses will appear here once cloud accounts are linked.
-        </div>
-      )}
+      <div className="mb-6 flex gap-1 rounded-lg border border-surface-border bg-slate-50 p-1">
+        <button
+          type="button"
+          onClick={() => setTab('overview')}
+          className={cn(
+            'flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+            tab === 'overview' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+          )}
+        >
+          <LayoutList className="h-4 w-4" />
+          Overview
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab('insights')}
+          className={cn(
+            'flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+            tab === 'insights' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+          )}
+        >
+          <BarChart3 className="h-4 w-4" />
+          Vendor insights
+          {vendorInsights && vendorInsights.signals.length > 0 && (
+            <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-800">
+              {vendorInsights.signals.length}
+            </span>
+          )}
+        </button>
+      </div>
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-4">
+      {tab === 'insights' && vendorInsights ? (
+        <CustomerVendorInsightsSection insights={vendorInsights} />
+      ) : tab === 'insights' ? (
+        <Card>
+          <h2 className="text-base font-semibold text-slate-900">Vendor insights</h2>
+          <p className="mt-2 text-sm text-slate-500">
+            {customer.status === 'onboarding'
+              ? 'Insights will populate after the first subscription is provisioned and vendor APIs sync.'
+              : 'No vendor API data synced for this customer in the demo dataset.'}
+          </p>
+        </Card>
+      ) : (
+        <>
+          {customer.status === 'onboarding' && (
+            <div className="mb-6 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+              Tenant provisioning is in progress via Synnex. Products and licenses will appear here once cloud accounts are linked.
+            </div>
+          )}
+
+          <div className="mb-6 grid gap-4 sm:grid-cols-4">
         {[
           { label: 'Licensed Users', value: stats.licensedUsers > 0 ? String(stats.licensedUsers) : '—', icon: Users },
           { label: 'Subscriptions', value: String(stats.activeSubscriptions), icon: CreditCard },
@@ -203,6 +254,8 @@ export function CustomerDetailPage() {
           </Card>
         </div>
       </div>
+        </>
+      )}
     </>
   )
 }
